@@ -85,6 +85,8 @@ function handleEvent(event) {
 
         const content = event.message.text
         console.log("get text: " + content + "\nfrom user: " + event.source.userId)
+
+        return true;
       }
       break;
   }
