@@ -80,7 +80,7 @@ function handleEvent(event) {
     case 'memberJoined':
       break;
     case 'message':
-      if (event.message.type === 'text') {
+      if (event.message.type == 'text') {
         //get response
 
         const content = event.message.text
