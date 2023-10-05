@@ -69,25 +69,17 @@ app.listen(port, () => {
   console.log(`listening on ${port}`);
 });
 
+//---------------
+// socket server
+//---------------
 const server = http.createServer(app);
-server.listen(4000, () => 'Server is running on port 3000');
+const io = socket(server);
 
-// Create an io server and allow for CORS from http://localhost:3000 with GET and POST methods
-const io = new Server(server, {
-  cors: {
-    origin: 'http://localhost:3000',
-    methods: ['GET', 'POST'],
-  },
-});
+const onConnection = (socket) => {
+  console.log('Socket.io init success')
+};
 
-io.on('connection', (socket) => {
-  // Send welcome msg to user that just joined chat only
-  socket.emit('receive_message', {
-    message: `Welcome AAA`,
-    username: AAA,
-    __createdtime__,
-  });
-});
+io.on("connection", onConnection);
 
 //---------------
 // event handler
@@ -110,7 +102,7 @@ function handleEvent(event) {
         console.log("get text: " + content + "\nfrom user: " + senderId)
 
         // Send  msg to user
-        socket.emit('receive_message', {
+        io.emit('receive_message', {
           message: content,
           username: senderId,
           __createdtime__,
