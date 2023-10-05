@@ -113,7 +113,7 @@ function handleEvent(event) {
           __createdtime__: contentTime,
         }
         io.sockets.emit('receive_message', dataToEmit);
-        console.log("data emitted: " + dataToEmit)
+        console.log("data emitted: " + JSON.stringify(dataToEmit))
 
         return true;
       }
