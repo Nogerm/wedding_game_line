@@ -75,15 +75,13 @@ app.listen(port, () => {
 const server = http.createServer(app);
 const io = socket(server);
 
-const onConnection = (socket) => {
+io.on('connection', (socket) => {
   console.log('Socket.io init success');
 
   socket.on('disconnect', () => {
     console.log('user disconnected');
   });
-};
-
-io.on("connection", onConnection);
+});
 
 //---------------
 // event handler
