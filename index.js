@@ -73,7 +73,12 @@ app.listen(port, () => {
 // socket server
 //---------------
 const server = http.createServer(app);
-const io = socket(server);
+const io = socket(server, {
+  allowRequest: (req, callback) => {
+    const noOriginHeader = req.headers.origin === undefined;
+    callback(null, noOriginHeader);
+  }
+});
 
 io.on('connection', (socket) => {
   console.log('Socket.io init success');
