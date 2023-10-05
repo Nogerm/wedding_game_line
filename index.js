@@ -112,7 +112,7 @@ function handleEvent(event) {
           username: senderId,
           __createdtime__: contentTime,
         }
-        io.emit('receive_message', dataToEmit);
+        io.sockets.emit('receive_message', dataToEmit);
         console.log("data emitted: " + dataToEmit)
 
         return true;
