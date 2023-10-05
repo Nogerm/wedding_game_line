@@ -99,13 +99,14 @@ function handleEvent(event) {
 
         const senderId = event.source.userId
         const content = event.message.text
+        const contentTime = event.message.timestamp
         console.log("get text: " + content + "\nfrom user: " + senderId)
 
         // Send  msg to user
         io.emit('receive_message', {
           message: content,
           username: senderId,
-          __createdtime__,
+          contentTime,
         });
 
         return true;
