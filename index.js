@@ -104,8 +104,16 @@ function handleEvent(event) {
       if (event.message.type == 'text') {
         //get response
 
+        const senderId = event.source.userId
         const content = event.message.text
-        console.log("get text: " + content + "\nfrom user: " + event.source.userId)
+        console.log("get text: " + content + "\nfrom user: " + senderId)
+
+        // Send  msg to user
+        socket.emit('receive_message', {
+          message: content,
+          username: senderId,
+          __createdtime__,
+        });
 
         return true;
       }
