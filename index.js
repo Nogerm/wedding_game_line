@@ -3,7 +3,7 @@
 const line = require('@line/bot-sdk');
 const express = require('express');
 const messageFactory = require('./message');
-const { Server } = require('socket.io');
+const socket = require('socket.io');
 http = require('http');
 
 // create LINE SDK config from env variables
