@@ -107,11 +107,13 @@ function handleEvent(event) {
         console.log("get text: " + content + "\nfrom user: " + senderId)
 
         // Send  msg to user
-        io.emit('receive_message', {
+        const dataToEmit = {
           message: content,
           username: senderId,
           __createdtime__: contentTime,
-        });
+        }
+        io.emit('receive_message', dataToEmit);
+        console.log("data emitted: " + dataToEmit)
 
         return true;
       }
