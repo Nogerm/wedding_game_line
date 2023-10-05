@@ -110,7 +110,7 @@ function handleEvent(event) {
         io.emit('receive_message', {
           message: content,
           username: senderId,
-          contentTime,
+          __createdtime__: contentTime,
         });
 
         return true;
