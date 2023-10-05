@@ -88,6 +88,10 @@ io.on('connection', (socket) => {
   });
 });
 
+server.listen(4000, () => {
+  console.log(`socket listening on ${port}`);
+});
+
 //---------------
 // event handler
 //---------------
