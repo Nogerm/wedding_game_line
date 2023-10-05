@@ -3,6 +3,8 @@
 const line = require('@line/bot-sdk');
 const express = require('express');
 const messageFactory = require('./message');
+const { Server } = require('socket.io');
+http = require('http');
 
 // create LINE SDK config from env variables
 const config = {
@@ -65,6 +67,25 @@ app.post('/pushMsg', (req, res) => {
 const port = process.env.PORT || 3000;
 app.listen(port, () => {
   console.log(`listening on ${port}`);
+});
+
+const server = http.createServer(app);
+
+// Create an io server and allow for CORS from http://localhost:3000 with GET and POST methods
+const io = new Server(server, {
+  cors: {
+    origin: 'http://localhost:3000',
+    methods: ['GET', 'POST'],
+  },
+});
+
+io.on('connection', (socket) => {
+  // Send welcome msg to user that just joined chat only
+  socket.emit('receive_message', {
+    message: `Welcome AAA`,
+    username: AAA,
+    __createdtime__,
+  });
 });
 
 //---------------
