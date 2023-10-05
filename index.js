@@ -70,6 +70,7 @@ app.listen(port, () => {
 });
 
 const server = http.createServer(app);
+server.listen(4000, () => 'Server is running on port 3000');
 
 // Create an io server and allow for CORS from http://localhost:3000 with GET and POST methods
 const io = new Server(server, {
