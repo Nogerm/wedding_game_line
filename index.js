@@ -5,7 +5,7 @@ const express = require('express');
 //const messageFactory = require('./message');
 const http = require('http');
 const path = require('path');
-const expressWs = require('express-ws');
+const WebSocket = require('ws');
 
 //---------------
 // line sdk
@@ -60,39 +60,18 @@ app.listen(port, () => {
 //---------------
 // socket server
 //---------------
-expressWs(app);
-app.ws('/', function (ws, req) {
-  console.log('socket running');
-  ws.send('hello')
+const wss = new WebSocket.Server({ port: 8080 });
+wss.on('connection', function connection(ws) {
+  console.log('socket connected');
 
-  ws.on('message', function (msg) {
-    console.log(`Receive message: ${msg}`);
+  ws.on('message', function message(data) {
+    console.log('received: %s', data);
   });
-  ws.onopen = function () {
-    console.log('app connected to websocket!');
-  };
-  ws.onmessage = function (message) {
-    console.log(message);
-  };
 
+  ws.on('error', console.error);
+
+  ws.send('something from server');
 });
-
-
-
-// const socket_server = http.createServer(app);
-// const io = socket(socket_server);
-
-// io.on('connection', (socket) => {
-//   console.log('Socket.io init success');
-
-//   socket.on('disconnect', () => {
-//     console.log('user disconnected');
-//   });
-// });
-
-// socket_server.listen(3001, () => {
-//   console.log(`socket listening on ${port}`);
-// });
 
 //---------------
 // static web
@@ -121,13 +100,12 @@ function handleEvent(event) {
         console.log("get text: " + content + "\nfrom user: " + senderId)
 
         // Send  msg to user
-        // const dataToEmit = {
-        //   message: content,
-        //   username: senderId,
-        //   __createdtime__: contentTime,
-        // }
-        // io.sockets.emit('receive_message', dataToEmit);
-        // console.log("data emitted: " + JSON.stringify(dataToEmit))
+        const dataToEmit = {
+          message: content,
+          username: senderId,
+          __createdtime__: contentTime,
+        }
+        ws.send(dataToEmit);
 
         return true;
       }
