@@ -62,7 +62,7 @@ app.listen(port, () => {
 // socket server
 //---------------
 expressWs(app);
-app.ws('/basic', function (ws, req) {
+app.ws('/', function (ws, req) {
   console.log('socket running');
   ws.send('hello')
 
@@ -122,13 +122,13 @@ function handleEvent(event) {
         console.log("get text: " + content + "\nfrom user: " + senderId)
 
         // Send  msg to user
-        const dataToEmit = {
-          message: content,
-          username: senderId,
-          __createdtime__: contentTime,
-        }
-        io.sockets.emit('receive_message', dataToEmit);
-        console.log("data emitted: " + JSON.stringify(dataToEmit))
+        // const dataToEmit = {
+        //   message: content,
+        //   username: senderId,
+        //   __createdtime__: contentTime,
+        // }
+        // io.sockets.emit('receive_message', dataToEmit);
+        // console.log("data emitted: " + JSON.stringify(dataToEmit))
 
         return true;
       }

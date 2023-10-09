@@ -12,24 +12,27 @@
         <p>Socket message:</p>
     </div>
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.0.0/socket.io.min.js"></script>
     <script>
-        const socket = io.connect('http://localhost:3000/basic');
+        if (!WebSocket) {
+            console.log("not support web socket")
+        }
+        const socket = new WebSocket('ws://localhost:3000')
 
-        socket.on('connect', () => {
-            console.log('Connected to WebSocket server');
-        });
+        socket.onopen = function () {
+            console.log("ok")
+        };
 
-        socket.on('receive_message', (data) => {
-            const messagesElement = document.getElementById('messages');
-            const messageDiv = document.createElement('div');
-            messageDiv.textContent = `Message from ${data.username}: ${data.message}`;
-            messagesElement.appendChild(messageDiv);
-        });
+        socket.onmessage = function (event) {
+            console.log('MSG: ' + event.data);
+        };
 
-        socket.on('disconnect', () => {
-            console.log('Disconnected from WebSocket server');
-        });
+        socket.onerror = function (e) {
+            console.log("error: " + JSON.stringify(e))
+        };
+
+        socket.onclose = function () {
+            console.log("close")
+        };
     </script>
 </body>
 
