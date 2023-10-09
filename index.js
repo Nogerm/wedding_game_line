@@ -93,6 +93,11 @@ server.listen(4000, () => {
 });
 
 //---------------
+// static web
+//---------------
+app.use(express.static(path.join(__dirname, 'public')));
+
+//---------------
 // event handler
 //---------------
 function handleEvent(event) {
