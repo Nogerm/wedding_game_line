@@ -60,7 +60,7 @@ app.listen(port, () => {
 //---------------
 // socket server
 //---------------
-const wss = new WebSocket.Server({ port: 8080 });
+const wss = new WebSocket.Server({ port: 3001 });
 let _ws = null
 wss.on('connection', function connection(ws) {
   console.log('socket connected');
