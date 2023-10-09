@@ -5,6 +5,7 @@ const express = require('express');
 const messageFactory = require('./message');
 const socket = require('socket.io');
 const http = require('http');
+const path = require('path');
 
 // create LINE SDK config from env variables
 const config = {
