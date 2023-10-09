@@ -7,6 +7,9 @@ const socket = require('socket.io');
 const http = require('http');
 const path = require('path');
 
+//---------------
+// line sdk
+//---------------
 // create LINE SDK config from env variables
 const config = {
   channelAccessToken: process.env.CHANNEL_ACCESS_TOKEN,
@@ -16,6 +19,9 @@ const config = {
 // create LINE SDK client
 const client = new line.Client(config);
 
+//---------------
+// express server
+//---------------
 // create Express app
 // about Express itself: https://expressjs.com/
 const app = express();
@@ -32,25 +38,6 @@ app.post('/callback', line.middleware(config), (req, res) => {
       res.status(500).end();
     });
 });
-
-// api for get messages template
-app.get('/msgTemplate', (req, res) => {
-  console.log("[Main] get message template");
-  const temp = {
-    "data": [
-      {
-        "isText": true,
-        "text": "訊息"
-      },
-      {
-        "isText": false,
-        "pkgId": 6632,
-        "stkrId": 11825376
-      }
-    ]
-  };
-  res.send(JSON.stringify(temp));
-})
 
 // api for send push messages
 app.post('/pushMsg', (req, res) => {
@@ -73,13 +60,8 @@ app.listen(port, () => {
 //---------------
 // socket server
 //---------------
-const server = http.createServer(app);
-const io = socket(server, {
-  allowRequest: (req, callback) => {
-    const noOriginHeader = req.headers.origin === undefined;
-    callback(null, noOriginHeader);
-  }
-});
+const socket_server = http.createServer(app);
+const io = socket(socket_server);
 
 io.on('connection', (socket) => {
   console.log('Socket.io init success');
@@ -89,7 +71,7 @@ io.on('connection', (socket) => {
   });
 });
 
-server.listen(3001, () => {
+socket_server.listen(3001, () => {
   console.log(`socket listening on ${port}`);
 });
 
@@ -133,16 +115,6 @@ function handleEvent(event) {
       break;
   }
 }
-
-
-//-----------
-// Utility
-//-----------
-function getRandom(max_value, seed) {
-  seed = Math.sin(seed) * 10000;
-  const result = seed - Math.floor(seed);
-  return Math.floor(result * max_value);
-};
 
 // Message event example
 
