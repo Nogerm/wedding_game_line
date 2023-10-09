@@ -12,13 +12,13 @@ const expressWs = require('express-ws');
 // line sdk
 //---------------
 // create LINE SDK config from env variables
-// const config = {
-//   channelAccessToken: process.env.CHANNEL_ACCESS_TOKEN,
-//   channelSecret: process.env.CHANNEL_SECRET,
-// };
+const config = {
+  channelAccessToken: process.env.CHANNEL_ACCESS_TOKEN,
+  channelSecret: process.env.CHANNEL_SECRET,
+};
 
 // create LINE SDK client
-// const client = new line.Client(config);
+const client = new line.Client(config);
 
 //---------------
 // express server
@@ -30,15 +30,15 @@ const app = express();
 
 // register a webhook handler with middleware
 // about the middleware, please refer to doc
-// app.post('/callback', line.middleware(config), (req, res) => {
-//   Promise
-//     .all(req.body.events.map(handleEvent))
-//     .then((result) => res.json(result))
-//     .catch((err) => {
-//       console.error(err);
-//       res.status(500).end();
-//     });
-// });
+app.post('/callback', line.middleware(config), (req, res) => {
+  Promise
+    .all(req.body.events.map(handleEvent))
+    .then((result) => res.json(result))
+    .catch((err) => {
+      console.error(err);
+      res.status(500).end();
+    });
+});
 
 // api for send push messages
 // app.post('/pushMsg', (req, res) => {
