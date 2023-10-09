@@ -3,7 +3,6 @@
 const line = require('@line/bot-sdk');
 const express = require('express');
 //const messageFactory = require('./message');
-const socket = require('socket.io');
 const http = require('http');
 const path = require('path');
 const expressWs = require('express-ws');
