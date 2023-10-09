@@ -8,11 +8,13 @@
 </head>
 
 <body>
-    <div id="messages"></div>
+    <div id="messages">
+        <p>Socket message:</p>
+    </div>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.0.0/socket.io.min.js"></script>
     <script>
-        const socket = io();
+        const socket = io('http://localhost:3001');
 
         socket.on('connect', () => {
             console.log('Connected to WebSocket server');
