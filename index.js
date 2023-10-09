@@ -2,22 +2,23 @@
 
 const line = require('@line/bot-sdk');
 const express = require('express');
-const messageFactory = require('./message');
+//const messageFactory = require('./message');
 const socket = require('socket.io');
 const http = require('http');
 const path = require('path');
+const expressWs = require('express-ws');
 
 //---------------
 // line sdk
 //---------------
 // create LINE SDK config from env variables
-const config = {
-  channelAccessToken: process.env.CHANNEL_ACCESS_TOKEN,
-  channelSecret: process.env.CHANNEL_SECRET,
-};
+// const config = {
+//   channelAccessToken: process.env.CHANNEL_ACCESS_TOKEN,
+//   channelSecret: process.env.CHANNEL_SECRET,
+// };
 
 // create LINE SDK client
-const client = new line.Client(config);
+// const client = new line.Client(config);
 
 //---------------
 // express server
@@ -29,51 +30,70 @@ const app = express();
 
 // register a webhook handler with middleware
 // about the middleware, please refer to doc
-app.post('/callback', line.middleware(config), (req, res) => {
-  Promise
-    .all(req.body.events.map(handleEvent))
-    .then((result) => res.json(result))
-    .catch((err) => {
-      console.error(err);
-      res.status(500).end();
-    });
-});
+// app.post('/callback', line.middleware(config), (req, res) => {
+//   Promise
+//     .all(req.body.events.map(handleEvent))
+//     .then((result) => res.json(result))
+//     .catch((err) => {
+//       console.error(err);
+//       res.status(500).end();
+//     });
+// });
 
 // api for send push messages
-app.post('/pushMsg', (req, res) => {
-  console.log("[Main] push message req:\n" + JSON.stringify(req.body));
-  messageFactory.sendMsgs(req.body.data)
-    .then(() => {
-      res.send("[Main] push message successed: " + JSON.stringify(req.body.data));
-    })
-    .catch(err => {
-      res.status(500).end();
-    })
-})
+// app.post('/pushMsg', (req, res) => {
+//   console.log("[Main] push message req:\n" + JSON.stringify(req.body));
+//   messageFactory.sendMsgs(req.body.data)
+//     .then(() => {
+//       res.send("[Main] push message successed: " + JSON.stringify(req.body.data));
+//     })
+//     .catch(err => {
+//       res.status(500).end();
+//     })
+// })
 
 // listen on port
 const port = process.env.PORT || 3000;
 app.listen(port, () => {
-  console.log(`listening on ${port}`);
+  console.log(`express listening on ${port}`);
 });
 
 //---------------
 // socket server
 //---------------
-const socket_server = http.createServer(app);
-const io = socket(socket_server);
+expressWs(app);
+app.ws('/basic', function (ws, req) {
+  console.log('socket running');
+  ws.send('hello')
 
-io.on('connection', (socket) => {
-  console.log('Socket.io init success');
-
-  socket.on('disconnect', () => {
-    console.log('user disconnected');
+  ws.on('message', function (msg) {
+    console.log(`Receive message: ${msg}`);
   });
+  ws.onopen = function () {
+    console.log('app connected to websocket!');
+  };
+  ws.onmessage = function (message) {
+    console.log(message);
+  };
+
 });
 
-socket_server.listen(3001, () => {
-  console.log(`socket listening on ${port}`);
-});
+
+
+// const socket_server = http.createServer(app);
+// const io = socket(socket_server);
+
+// io.on('connection', (socket) => {
+//   console.log('Socket.io init success');
+
+//   socket.on('disconnect', () => {
+//     console.log('user disconnected');
+//   });
+// });
+
+// socket_server.listen(3001, () => {
+//   console.log(`socket listening on ${port}`);
+// });
 
 //---------------
 // static web
