@@ -61,8 +61,10 @@ app.listen(port, () => {
 // socket server
 //---------------
 const wss = new WebSocket.Server({ port: 8080 });
+let _ws = null
 wss.on('connection', function connection(ws) {
   console.log('socket connected');
+  _ws = ws
 
   ws.on('message', function message(data) {
     console.log('received: %s', data);
@@ -105,7 +107,13 @@ function handleEvent(event) {
           username: senderId,
           __createdtime__: contentTime,
         }
-        ws.send(dataToEmit);
+
+        if (ws) {
+          console.log("data send: " + dataToEmit)
+          ws.send(dataToEmit);
+        } else {
+          console.log("ws not exist")
+        }
 
         return true;
       }
