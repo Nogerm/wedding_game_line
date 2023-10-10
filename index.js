@@ -86,7 +86,7 @@ wss.on('connection', function connection(ws) {
   connections.push(ws)
 });
 
-server.listen(4000, () => {
+server.listen(3000, () => {
   console.log(`websocket listening on ${port}`);
 });
 
