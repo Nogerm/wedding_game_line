@@ -60,7 +60,9 @@ app.listen(port, () => {
 //---------------
 // socket server
 //---------------
-const wss = new WebSocket.Server(app);
+const server = http.createServer(app);
+const wss = new WebSocket.Server({ server: server });
+
 let _ws = null
 wss.on('connection', function connection(ws) {
   console.log('socket connected');
@@ -82,6 +84,10 @@ wss.on('connection', function connection(ws) {
   });
 
   ws.send('something from server');
+});
+
+server.listen(4000, () => {
+  console.log(`websocket listening on ${port}`);
 });
 
 //---------------

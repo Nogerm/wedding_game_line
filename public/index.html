@@ -27,15 +27,20 @@
             if (!WebSocket) {
                 console.log("not support web socket")
             }
-            const host = 'ws://localhost:3000'
-            const ws = new WebSocket(host)
+            const host = 'ws://localhost'
+            const port = 4000
+            const ws = new WebSocket(host + ':' + port)
 
             ws.onopen = () => {
                 console.log("ok")
             };
 
             ws.onmessage = (event) => {
-                console.log('MSG: ' + event.data);
+                let txt = event.data
+                console.log('MSG: ' + txt);
+                if (!showDom.value) showDom.value = txt
+                else showDom.value = showDom.value + "\n" + txt
+                keyinDom.value = ""
             };
 
             ws.onerror = (e) => {
