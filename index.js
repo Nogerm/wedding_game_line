@@ -125,7 +125,6 @@ function handleEvent(event) {
           __createdtime__: contentTime,
         }
 
-        ws.send("connections: " + JSON.stringify(connections));
         console.log("connections: " + JSON.stringify(connections))
 
         connections.forEach(client => {
