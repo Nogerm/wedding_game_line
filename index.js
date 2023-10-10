@@ -84,6 +84,7 @@ wss.on('connection', function connection(ws) {
 
   ws.send('something from server');
   connections.push(ws)
+  console.log("connections after push: " + JSON.stringify(connections))
 });
 
 server.listen(4000, () => {

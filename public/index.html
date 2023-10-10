@@ -40,23 +40,23 @@
             const ws = new WebSocket(host + ':' + port)
 
             ws.onopen = () => {
-                console.log("ok")
+                console.log("[HTML] socket connected")
             };
 
             ws.onmessage = (event) => {
                 let txt = event.data
-                console.log('MSG: ' + txt);
+                console.log('[HTML] on message: ' + txt);
                 if (!showDom.value) showDom.value = txt
                 else showDom.value = showDom.value + "\n" + txt
                 keyinDom.value = ""
             };
 
             ws.onerror = (e) => {
-                console.log("error: " + JSON.stringify(e))
+                console.log("[HTML] on error: " + JSON.stringify(e))
             };
 
             ws.onclose = () => {
-                console.log("close")
+                console.log("[HTML] on close")
             };
 
         })
