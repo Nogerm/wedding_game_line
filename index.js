@@ -60,17 +60,26 @@ app.listen(port, () => {
 //---------------
 // socket server
 //---------------
-const wss = new WebSocket.Server({ port: 8080 });
+const wss = new WebSocket.Server(app);
 let _ws = null
 wss.on('connection', function connection(ws) {
   console.log('socket connected');
   _ws = ws
 
   ws.on('message', function message(data) {
+    data = data.toString()
     console.log('received: %s', data);
+
+    ws.send(data);//echo
   });
 
-  ws.on('error', console.error);
+  ws.on('error', (e) => {
+    console.log('socket error: ' + JSON.stringify(e));
+  });
+
+  ws.on('close', () => {
+    console.log('socket closed');
+  });
 
   ws.send('something from server');
 });

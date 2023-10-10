@@ -9,40 +9,45 @@
 
 <body>
     <div id="messages">
-        <p>Socket message:</p>
+        <textarea id="txtShow" disabled></textarea>
+        <input id="txtInput" type="text">
+        <button id="btnSend">送出</button>
     </div>
 
     <script>
-        if (!WebSocket) {
-            console.log("not support web socket")
-        }
-        const ws = new WebSocket('ws://localhost:8080/')
+        document.addEventListener("DOMContentLoaded", event => {
+            let keyinDom = document.querySelector('#txtInput')
+            let showDom = document.querySelector('#txtShow')
 
-        // Connection opened
-        ws.addEventListener("open", (event) => {
-            socket.send("Hello Server!");
-        });
+            document.querySelector("#btnSend").addEventListener('click', () => {
+                let txt = keyinDom.value;
+                ws.send(txt);
+            })
 
-        // Listen for messages
-        ws.addEventListener("message", (event) => {
-            console.log("Message from server ", event.data);
-        });
+            if (!WebSocket) {
+                console.log("not support web socket")
+            }
+            const host = 'ws://localhost:3000'
+            const ws = new WebSocket(host)
 
-        ws.onopen = function () {
-            console.log("ok")
-        };
+            ws.onopen = () => {
+                console.log("ok")
+            };
 
-        ws.onmessage = function (event) {
-            console.log('MSG: ' + event.data);
-        };
+            ws.onmessage = (event) => {
+                console.log('MSG: ' + event.data);
+            };
 
-        ws.onerror = function (e) {
-            console.log("error: " + JSON.stringify(e))
-        };
+            ws.onerror = (e) => {
+                console.log("error: " + JSON.stringify(e))
+            };
 
-        ws.onclose = function () {
-            console.log("close")
-        };
+            ws.onclose = () => {
+                console.log("close")
+            };
+
+        })
+
     </script>
 </body>
 
