@@ -63,10 +63,9 @@ app.listen(port, () => {
 const server = http.createServer(app);
 const wss = new WebSocket.Server({ server: server });
 
-let _ws = null
+let connections = []
 wss.on('connection', function connection(ws) {
   console.log('socket connected');
-  _ws = ws
 
   ws.on('message', function message(data) {
     data = data.toString()
@@ -84,6 +83,7 @@ wss.on('connection', function connection(ws) {
   });
 
   ws.send('something from server');
+  connections.push(ws)
 });
 
 server.listen(4000, () => {
@@ -123,12 +123,12 @@ function handleEvent(event) {
           __createdtime__: contentTime,
         }
 
-        if (ws) {
-          console.log("data send: " + dataToEmit)
-          ws.send(dataToEmit);
-        } else {
-          console.log("ws not exist")
-        }
+        console.log("connections: " + JSON.stringify(connections))
+
+        connections.forEach(client => {
+          console.log("client: " + client)
+          client.send(dataToEmit)
+        });
 
         return true;
       }
