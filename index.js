@@ -66,6 +66,9 @@ const wss = new WebSocket.Server({ server: server });
 let connections = []
 wss.on('connection', function connection(ws) {
   console.log('socket connected');
+  ws.send('socket connected');
+  connections.push(ws)
+  ws.send("connections after push: " + JSON.stringify(connections));
 
   ws.on('message', function message(data) {
     data = data.toString()
@@ -83,8 +86,6 @@ wss.on('connection', function connection(ws) {
   });
 
   ws.send('something from server');
-  connections.push(ws)
-  console.log("connections after push: " + JSON.stringify(connections))
 });
 
 server.listen(4000, () => {
@@ -124,10 +125,12 @@ function handleEvent(event) {
           __createdtime__: contentTime,
         }
 
+        ws.send("connections: " + JSON.stringify(connections));
         console.log("connections: " + JSON.stringify(connections))
 
         connections.forEach(client => {
           console.log("client: " + client)
+          client.send("client: " + JSON.stringify(client));
           client.send(dataToEmit)
         });
 
