@@ -38,17 +38,16 @@ app.post('/callback', line.middleware(config), (req, res) => {
 
 // listen on port
 const port = process.env.PORT || 3000;
-app.listen(port, () => {
+const server = app.listen(port, () => {
   console.log(`express listening on ${port}`);
 });
 
 //---------------
 // socket server
 //---------------
-const server = http.createServer(app);
+// const server = http.createServer(app);
 const wss = new WebSocket.Server({ server: server });
 
-let connections = [];
 let BULLETS = '';
 let USER_AVATAR = '';
 wss.on('connection', function connection(ws) {
@@ -73,9 +72,9 @@ wss.on('connection', function connection(ws) {
   });
 
   ws.on('close', () => {
-    console.log('[WS] socket closed');
     wss.clients.clear;
     clearInterval(sendNowTime);
+    console.log('[WS] socket closed');
   });
 
   ws.send('[WS] connection initialized');
@@ -93,6 +92,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 //---------------
 // event handler
 //---------------
+let index = 0;
 async function handleEvent(event) {
   console.log("Event : " + JSON.stringify(event));
   if (event.type !== 'message' || event.message.type !== 'text') {
@@ -105,7 +105,7 @@ async function handleEvent(event) {
   const contentTime = event.message.timestamp
   const echo = {
     type: 'text',
-    text: '已收到你的答案: ' + context
+    text: '問題' + (index +1) + '\n已收到你的答案: ' + context
   };
 
   BULLETS  = context
