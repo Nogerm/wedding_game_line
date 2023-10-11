@@ -100,7 +100,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 //---------------
 // event handler
 //---------------
-function handleEvent(event) {
+const handleEvent = (event) => {
   console.log("Event : " + JSON.stringify(event));
 
   switch (event.type) {
