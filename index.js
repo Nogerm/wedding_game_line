@@ -2,7 +2,6 @@
 
 const line = require('@line/bot-sdk');
 const express = require('express');
-//const messageFactory = require('./message');
 const http = require('http');
 const path = require('path');
 const WebSocket = require('ws');
@@ -23,12 +22,10 @@ const client = new line.Client(config);
 // express server
 //---------------
 // create Express app
-// about Express itself: https://expressjs.com/
 const app = express();
 //app.use(express.json());
 
 // register a webhook handler with middleware
-// about the middleware, please refer to doc
 app.post('/callback', line.middleware(config), (req, res) => {
   Promise
     .all(req.body.events.map(handleEvent))
@@ -38,18 +35,6 @@ app.post('/callback', line.middleware(config), (req, res) => {
       res.status(500).end();
     });
 });
-
-// api for send push messages
-// app.post('/pushMsg', (req, res) => {
-//   console.log("[Main] push message req:\n" + JSON.stringify(req.body));
-//   messageFactory.sendMsgs(req.body.data)
-//     .then(() => {
-//       res.send("[Main] push message successed: " + JSON.stringify(req.body.data));
-//     })
-//     .catch(err => {
-//       res.status(500).end();
-//     })
-// })
 
 // listen on port
 const port = process.env.PORT || 3000;
@@ -65,27 +50,25 @@ const wss = new WebSocket.Server({ server: server });
 
 let connections = []
 wss.on('connection', function connection(ws) {
-  console.log('socket connected');
-  ws.send('socket connected');
-  connections.push(ws)
-  ws.send("connections after push: " + connections);
+  console.log('[WS] socket connected');
 
   ws.on('message', function message(data) {
     data = data.toString()
-    console.log('received: %s', data);
-
+    console.log('[WS] received: %s'+ data);
     ws.send(data);//echo
   });
 
   ws.on('error', (e) => {
-    console.log('socket error: ' + JSON.stringify(e));
+    console.log('[WS] socket error: ' + JSON.stringify(e));
+    wss.clients.clear;
   });
 
   ws.on('close', () => {
-    console.log('socket closed');
+    console.log('[WS] socket closed');
+    wss.clients.clear;
   });
 
-  ws.send('something from server');
+  ws.send('[WS] connection initialized');
 });
 
 server.listen(4000, () => {
@@ -132,7 +115,8 @@ const handleEvent = (event) => {
           client.send(dataToEmit)
         });
 
-        wss.clients.forEach(function each(client) {
+        console.log("wss client num: " + wss.clients.size)
+        wss.clients.forEach(client => {
           console.log("wss.clients client: " + client)
           client.send(dataToEmit);
        });
