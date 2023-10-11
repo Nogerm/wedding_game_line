@@ -6,6 +6,10 @@ const http = require('http');
 const path = require('path');
 const WebSocket = require('ws');
 
+var index = 0;
+var BULLETS = '';
+var USER_AVATAR = '';
+
 //---------------
 // line sdk
 //---------------
@@ -47,10 +51,7 @@ const server = app.listen(port, () => {
 //---------------
 // const server = http.createServer(app);
 const wss = new WebSocket.Server({ server: server });
-
-let BULLETS = '';
-let USER_AVATAR = '';
-wss.on('connection', function connection(ws) {
+wss.on('connection', (ws) => {
   console.log('[WS] socket connected');
 
   // Send global message to Client in the schedule.
@@ -92,7 +93,6 @@ app.use(express.static(path.join(__dirname, 'public')));
 //---------------
 // event handler
 //---------------
-let index = 0;
 async function handleEvent(event) {
   console.log("Event : " + JSON.stringify(event));
   if (event.type !== 'message' || event.message.type !== 'text') {
@@ -100,8 +100,13 @@ async function handleEvent(event) {
     return Promise.resolve(null);
   }
 
-  const user = await client.getProfile(event.source.userId);
   const context = await event.message.text;
+  if (context !== 'A' || context !== 'B' || context !== 'C' || context !== 'D') {
+    // ignore irrelavent response
+    return Promise.resolve(null);
+  }
+
+  const user = await client.getProfile(event.source.userId);
   const contentTime = event.message.timestamp
   const echo = {
     type: 'text',
