@@ -54,6 +54,14 @@ let USER_AVATAR = '';
 wss.on('connection', function connection(ws) {
   console.log('[WS] socket connected');
 
+  // Send global message to Client in the schedule.
+  const sendNowTime = setInterval(() => {
+    ws.send(JSON.stringify({ text: BULLETS, avatar: USER_AVATAR }));
+    BULLETS = '';
+    USER_AVATAR = ''; // Refresh
+    console.log("interval triggered")
+  }, 2000);
+
   ws.on('message', function message(data) {
     data = data.toString()
     console.log('[WS] received: '+ data);
@@ -71,14 +79,6 @@ wss.on('connection', function connection(ws) {
   });
 
   ws.send('[WS] connection initialized');
-
-  // Send global message to Client in the schedule.
-  const sendNowTime = setInterval(() => {
-    ws.send(JSON.stringify({ text: BULLETS, avatar: USER_AVATAR }));
-    BULLETS = '';
-    USER_AVATAR = ''; // Refresh
-    console.log("interval triggered")
-  }, 2000);
 });
 
 server.listen(4000, () => {
