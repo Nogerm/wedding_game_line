@@ -101,7 +101,7 @@ async function handleEvent(event) {
   }
 
   const context = await event.message.text;
-  if (context !== 'A' || context !== 'B' || context !== 'C' || context !== 'D') {
+  if (context !== 'A' && context !== 'B' && context !== 'C' && context !== 'D') {
     // ignore irrelavent response
     return Promise.resolve(null);
   }
