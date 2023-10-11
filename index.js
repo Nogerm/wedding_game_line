@@ -110,7 +110,7 @@ async function handleEvent(event) {
 
   BULLETS  = context
   USER_AVATAR = await user.pictureUrl;
-  console.log("get text: " + context + "\nfrom user: " + senderId + '\nuser pic: ' + USER_AVATAR)
+  console.log("get text: " + context + "\nfrom user: " + user + '\nuser pic: ' + USER_AVATAR)
 
   return client.replyMessage(event.replyToken, echo);
 }
