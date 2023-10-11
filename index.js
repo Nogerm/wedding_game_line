@@ -42,14 +42,14 @@ app.post('/callback', line.middleware(config), (req, res) => {
 
 // listen on port
 const port = process.env.PORT || 3000;
-const server = app.listen(port, () => {
+app.listen(port, () => {
   console.log(`express listening on ${port}`);
 });
 
 //---------------
 // socket server
 //---------------
-// const server = http.createServer(app);
+const server = http.createServer(app);
 const wss = new WebSocket.Server({ server: server });
 wss.on('connection', (ws) => {
   console.log('[WS] socket connected');
@@ -81,9 +81,9 @@ wss.on('connection', (ws) => {
   ws.send('[WS] connection initialized');
 });
 
-// server.listen(4000, () => {
-//   console.log(`websocket listening on ${port}`);
-// });
+server.listen(4000, () => {
+  console.log(`websocket listening on ${port}`);
+});
 
 //---------------
 // static web
@@ -102,8 +102,12 @@ async function handleEvent(event) {
 
   const context = await event.message.text;
   if (context !== 'A' && context !== 'B' && context !== 'C' && context !== 'D') {
-    // ignore irrelavent response
-    return Promise.resolve(null);
+    // irrelavent response
+    const echo = {
+      type: 'text',
+      text: '我看不懂你的回答\n請用下方的選單作答'
+    };
+    return client.replyMessage(event.replyToken, echo);
   }
 
   const user = await client.getProfile(event.source.userId);
