@@ -48,7 +48,9 @@ app.listen(port, () => {
 const server = http.createServer(app);
 const wss = new WebSocket.Server({ server: server });
 
-let connections = []
+let connections = [];
+let BULLETS = '';
+let USER_AVATAR = '';
 wss.on('connection', function connection(ws) {
   console.log('[WS] socket connected');
 
@@ -65,6 +67,7 @@ wss.on('connection', function connection(ws) {
   ws.on('close', () => {
     console.log('[WS] socket closed');
     wss.clients.clear;
+    clearInterval(sendNowTime);
   });
 
   ws.send('[WS] connection initialized');
@@ -74,6 +77,7 @@ wss.on('connection', function connection(ws) {
     ws.send(JSON.stringify({ text: BULLETS, avatar: USER_AVATAR }));
     BULLETS = '';
     USER_AVATAR = ''; // Refresh
+    console.log("interval")
   }, 2000);
 });
 
