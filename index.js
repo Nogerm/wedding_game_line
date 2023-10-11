@@ -128,9 +128,14 @@ function handleEvent(event) {
         console.log("connections: " + connections)
 
         connections.forEach(client => {
-          console.log("client: " + client)
+          console.log("connections client: " + client)
           client.send(dataToEmit)
         });
+
+        wss.clients.forEach(function each(client) {
+          console.log("wss.clients client: " + client)
+          client.send(dataToEmit);
+       });
 
         return true;
       }
