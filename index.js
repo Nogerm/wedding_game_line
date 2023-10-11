@@ -68,6 +68,13 @@ wss.on('connection', function connection(ws) {
   });
 
   ws.send('[WS] connection initialized');
+
+  // Send global message to Client in the schedule.
+  const sendNowTime = setInterval(() => {
+    ws.send(JSON.stringify({ text: BULLETS, avatar: USER_AVATAR }));
+    BULLETS = '';
+    USER_AVATAR = ''; // Refresh
+  }, 2000);
 });
 
 server.listen(4000, () => {
@@ -82,49 +89,68 @@ app.use(express.static(path.join(__dirname, 'public')));
 //---------------
 // event handler
 //---------------
-const handleEvent = (event) => {
-  console.log("Event : " + JSON.stringify(event));
-
-  switch (event.type) {
-    case 'join':
-    case 'follow':
-      break;
-    case 'memberJoined':
-      break;
-    case 'message':
-      if (event.message.type == 'text') {
-        //get response
-
-        const senderId = event.source.userId
-        const content = event.message.text
-        const contentTime = event.message.timestamp
-        console.log("get text: " + content + "\nfrom user: " + senderId)
-
-        // Send  msg to user
-        const dataToEmit = {
-          message: content,
-          username: senderId,
-          __createdtime__: contentTime,
-        }
-
-        console.log("connections: " + connections)
-
-        connections.forEach(client => {
-          console.log("connections client: " + client)
-          client.send(dataToEmit)
-        });
-
-        console.log("wss client num: " + wss.clients.size)
-        wss.clients.forEach(client => {
-          console.log("wss.clients client: " + client)
-          client.send(dataToEmit);
-       });
-
-        return true;
-      }
-      break;
+async function handleEvent(event) {
+  if (event.type !== 'message' || event.message.type !== 'text') {
+    // ignore non-text-message event
+    return Promise.resolve(null);
   }
+
+  const user = await client.getProfile(event.source.userId);
+  const context = await event.message.text;
+  const contentTime = event.message.timestamp
+  const echo = {
+    type: 'text',
+    text: '已收到你的答案: ' + context
+  };
+
+  BULLETS  = context
+  USER_AVATAR = await user.pictureUrl;
+
+  return client.replyMessage(event.replyToken, echo);
 }
+
+// const handleEvent = (event) => {
+//   console.log("Event : " + JSON.stringify(event));
+
+//   switch (event.type) {
+//     case 'join':
+//     case 'follow':
+//       break;
+//     case 'memberJoined':
+//       break;
+//     case 'message':
+//       if (event.message.type == 'text') {
+//         //get response
+
+//         const senderId = event.source.userId
+//         const content = event.message.text
+//         const contentTime = event.message.timestamp
+//         console.log("get text: " + content + "\nfrom user: " + senderId)
+
+//         // Send  msg to user
+//         const dataToEmit = {
+//           message: content,
+//           username: senderId,
+//           __createdtime__: contentTime,
+//         }
+
+//         console.log("connections: " + connections)
+//         connections.forEach(client => {
+//           console.log("connections client: " + client)
+//           client.send(dataToEmit)
+//         });
+
+//         console.log("wss client num: " + wss.clients.size)
+//         wss.clients.forEach(client => {
+//           console.log("wss.clients client: " + client)
+//           client.send(dataToEmit);
+//        });
+
+//         return true;
+//       }
+//       break;
+//   }
+// }
 
 // Message event example
 
