@@ -68,7 +68,7 @@ wss.on('connection', function connection(ws) {
   console.log('socket connected');
   ws.send('socket connected');
   connections.push(ws)
-  ws.send("connections after push: " + JSON.stringify(connections));
+  ws.send("connections after push: " + connections);
 
   ws.on('message', function message(data) {
     data = data.toString()
@@ -125,11 +125,10 @@ function handleEvent(event) {
           __createdtime__: contentTime,
         }
 
-        console.log("connections: " + JSON.stringify(connections))
+        console.log("connections: " + connections)
 
         connections.forEach(client => {
           console.log("client: " + client)
-          client.send("client: " + JSON.stringify(client));
           client.send(dataToEmit)
         });
 
