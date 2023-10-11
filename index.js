@@ -77,7 +77,7 @@ wss.on('connection', function connection(ws) {
     ws.send(JSON.stringify({ text: BULLETS, avatar: USER_AVATAR }));
     BULLETS = '';
     USER_AVATAR = ''; // Refresh
-    console.log("interval")
+    console.log("interval triggered")
   }, 2000);
 });
 
@@ -94,6 +94,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 // event handler
 //---------------
 async function handleEvent(event) {
+  console.log("Event : " + JSON.stringify(event));
   if (event.type !== 'message' || event.message.type !== 'text') {
     // ignore non-text-message event
     return Promise.resolve(null);
@@ -109,6 +110,7 @@ async function handleEvent(event) {
 
   BULLETS  = context
   USER_AVATAR = await user.pictureUrl;
+  console.log("get text: " + content + "\nfrom user: " + senderId + '\nuser pic: ' + USER_AVATAR)
 
   return client.replyMessage(event.replyToken, echo);
 }
