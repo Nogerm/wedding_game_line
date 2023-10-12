@@ -8,7 +8,18 @@ const WebSocket = require('ws');
 
 let questionIdx = 0;
 let userPool = [];
-let answerPool = [];
+let answerPool = [
+  [],//1
+  [],//2
+  [],//3
+  [],//4
+  [],//5
+  [],//6
+  [],//7
+  [],//8
+  [],//9
+  []//10
+];
 
 //---------------
 // line sdk
