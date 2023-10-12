@@ -79,6 +79,7 @@ app.listen(port, () => {
 //---------------
 
 app.get('/qid', (req, res) => {
+  console.log("[Express] Get qid: " + qid + "\nq total: " + qTotal);
   res.status(200).json({ qid: qId, qtotal: qTotal });
 });
 
@@ -91,6 +92,7 @@ app.get('/qsammary', (req, res) => {
     c: qStatus.filter(item => item.ans == 'C').length,
     d: qStatus.filter(item => item.ans == 'D').length
   }
+  console.log("[Express] Get sammary: " + JSON.stringify(resCount));
   res.status(200).json({ qid: qId, resCount: resCount });
 });
 
@@ -119,17 +121,20 @@ app.get('/qleader', async (req, res) => {
     return obj
   })
 
+  console.log("[Express] Get leaderboard: " + JSON.stringify(userCounts));
   res.status(200).json({ qid: qId, qleader: userCounts });
 });
 
 app.post('/next', (req, res) => {
   //const id = req.body.id;//target question id
   qId = qId + 1;
+  console.log("[Express] next page: " + qId);
   res.status(200).json({ qid: qId, qtotal: qTotal });
 });
 
 app.post('/prev', (req, res) => {
   qId = qId - 1;
+  console.log("[Express] prev page: " + qId);
   res.status(200).json({ qid: qId, qtotal: qTotal });
 });
 
