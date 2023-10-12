@@ -79,7 +79,7 @@ app.listen(port, () => {
 //---------------
 
 app.get('/qid', (req, res) => {
-  console.log("[Express] Get qid: " + qid + "\nq total: " + qTotal);
+  console.log("[Express] Get qid: " + qId + "\nq total: " + qTotal);
   res.status(200).json({ qid: qId, qtotal: qTotal });
 });
 
