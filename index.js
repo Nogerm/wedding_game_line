@@ -5,6 +5,7 @@ const express = require('express');
 const http = require('http');
 const path = require('path');
 const WebSocket = require('ws');
+const cors = require('cors');
 
 let qId = 0;
 let qTotal = 10;
@@ -53,6 +54,17 @@ const client = new line.Client(config);
 // create Express app
 const app = express();
 //app.use(express.json());
+
+const corsOptions = {
+  origin: [
+    'http://localhost:3000',
+  ],
+  methods: 'GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS',
+  allowedHeaders: ['Content-Type', 'Authorization'],
+};
+app.use(cors(corsOptions));
+
+
 
 // register a webhook handler with middleware
 app.post('/webhook', line.middleware(config), (req, res) => {
