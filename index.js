@@ -109,12 +109,15 @@ const handleEvent = async (event) => {
   console.log("Event : " + JSON.stringify(event));
   if (event.type !== 'message' || event.message.type !== 'text') {
     // ignore non-text-message event
+    console.log("ignore non-text-message event")
     return Promise.resolve(null);
   }
 
-  const context = event.message.text;
+  const context = await event.message.text;
+  console.log("context: " + context)
   if (context !== 'A' && context !== 'B' && context !== 'C' && context !== 'D') {
     // irrelavent response
+    console.log("irrelavent response")
     const echo = {
       type: 'text',
       text: '我看不懂你的回答\n請用下方的選單作答'
