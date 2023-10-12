@@ -55,7 +55,9 @@ const client = new line.Client(config);
 const app = express();
 //app.use(express.json());
 
-app.use(cors());
+app.use(cors({
+  origin: 'http://localhost:3000'
+}));
 
 // register a webhook handler with middleware
 app.post('/webhook', line.middleware(config), (req, res) => {
@@ -80,6 +82,7 @@ app.listen(port, () => {
 
 app.get('/qid', (req, res) => {
   console.log("[Express] Get qid: " + qId + "\nq total: " + qTotal);
+  res.setHeader('Access-Control-Allow-Origin', 'http://localhost:3000');
   res.status(200).json({ qid: qId, qtotal: qTotal });
 });
 
