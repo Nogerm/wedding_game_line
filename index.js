@@ -55,16 +55,7 @@ const client = new line.Client(config);
 const app = express();
 //app.use(express.json());
 
-const corsOptions = {
-  origin: [
-    'http://localhost:3000',
-  ],
-  methods: 'GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS',
-  allowedHeaders: ['Content-Type', 'Authorization'],
-};
-app.use(cors(corsOptions));
-
-
+app.use(cors());
 
 // register a webhook handler with middleware
 app.post('/webhook', line.middleware(config), (req, res) => {
