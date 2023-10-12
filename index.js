@@ -27,7 +27,7 @@ const client = new line.Client(config);
 //---------------
 // create Express app
 const app = express();
-app.use(express.json());
+//app.use(express.json());
 
 // register a webhook handler with middleware
 app.post('/webhook', line.middleware(config), (req, res) => {
