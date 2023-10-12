@@ -112,7 +112,7 @@
         $(document).ready(function () {
 
             //Init page
-            $.get("http://localhost:3000/qid")
+            $.get("http://localhost/qid")
                 .done(function (data, textStatus, jqXHR) {
                     console.log(data);
                     document.querySelector("#qid").textContent = (data.qid + 1) + '/' + data.qtotal;
@@ -120,7 +120,7 @@
 
             //Events
             document.querySelector("#btnPrev").addEventListener('click', () => {
-                $.post("http://localhost:3000/prev",
+                $.post("http://localhost/prev",
                     { "on": false } // or {"on": true} 
                 ).done(function (data, textStatus, jqXHR) {
                     console.log(data);
@@ -129,7 +129,7 @@
             });
 
             document.querySelector("#btnNext").addEventListener('click', () => {
-                $.post("http://localhost:3000/next",
+                $.post("http://localhost/next",
                     { "on": false } // or {"on": true} 
                 ).done(function (data, textStatus, jqXHR) {
                     console.log(data);
