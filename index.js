@@ -91,56 +91,9 @@ app.get('/qsammary', (req, res) => {
   res.status(200).json({ qid: qId, resCount: resCount });
 });
 
-app.get('/qleader', (req, res) => {
+app.get('/qleader', async (req, res) => {
   let correctPool = [];
-
-  const fakeResponsePool = [
-    [
-      {
-        id: 'a',
-        ans: 'A'
-      },
-      {
-        id: 'b',
-        ans: 'A'
-      },
-      {
-        id: 'c',
-        ans: 'A'
-      }
-    ],
-    [
-      {
-        id: 'a',
-        ans: 'B'
-      },
-      {
-        id: 'b',
-        ans: 'A'
-      },
-      {
-        id: 'c',
-        ans: 'A'
-      }
-    ],
-    [
-      {
-        id: 'a',
-        ans: 'C'
-      },
-      {
-        id: 'b',
-        ans: 'C'
-      },
-      {
-        id: 'c',
-        ans: 'A'
-      }
-    ]
-  ]
-
-
-  fakeResponsePool.forEach((qResArray, index) => {
+  responsePool.forEach((qResArray, index) => {
     const correctPeopleOfQ = qResArray.filter(item => item.ans == answerArray[index]);
     correctPool = [...correctPool, ...correctPeopleOfQ];
   });
@@ -152,7 +105,18 @@ app.get('/qleader', (req, res) => {
   correctPeople.forEach(function (x) { counts[x] = (counts[x] || 0) + 1; });
   console.log(JSON.stringify(counts))
 
-  res.status(200).json({ qid: qId, qleader: counts });
+  const userIds = Object.keys(counts)
+
+  const userCounts = userIds.map(userId => {
+    const obj = {
+      id: userId,
+      avatar: getUserById(userId).avatarUrl,
+      score: counts[userId]
+    }
+    return obj
+  })
+
+  res.status(200).json({ qid: qId, qleader: userCounts });
 });
 
 app.post('/next', (req, res) => {
