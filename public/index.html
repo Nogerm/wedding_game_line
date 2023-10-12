@@ -6,23 +6,200 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>WebSocket Example</title>
 
-    <!-- UIkit CSS -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/uikit@3.17.1/dist/css/uikit.min.css" />
+    <link rel="stylesheet" href="index.css">
 
-    <!-- UIkit JS -->
-    <script src="https://cdn.jsdelivr.net/npm/uikit@3.17.1/dist/js/uikit.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/uikit@3.17.1/dist/js/uikit-icons.min.js"></script>
+    <!-- Add Bootstrap CSS link -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Add Bootstrap JavaScript link -->
+    <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+
+    <!-- Chart.js -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.min.js"></script>
+
+
 </head>
 
 <body>
-    <div id="messages" class="uk-background-height-1-1" style="background-color:#f8cdca; background-image:
-        url(../images/bg.png);">
-        <textarea id="txtShow" disabled></textarea>
-        <input id="txtInput" type="text">
-        <button id="btnSend">送出</button>
+    <div id="messages" class=" maincontainer">
+
+        <div class="centered">
+            <!-- <textarea id="txtShow" disabled></textarea>
+            <input id="txtInput" type="text">
+            <button id="btnSend">送出</button> -->
+
+            <div class="container text-center  row-gap-3">
+                <div class="row align-items-center">
+                    <h2><span>題目</span><span id="qid">1</span></h2>
+                </div>
+                <div class="row">
+                    <div id="carouselExample" class="carousel slide">
+                        <div class="carousel-inner">
+                            <div class="carousel-item active">
+                                <img src="./images/demo.png" class="d-block w-100" alt="...">
+                            </div>
+                            <div class="carousel-item">
+                                <img src="./images/demo.png" class="d-block w-100" alt="...">
+                            </div>
+                            <div class="carousel-item">
+                                <img src="./images/demo.png" class="d-block w-100" alt="...">
+                            </div>
+                        </div>
+                        <button id="btnPrev" class="carousel-control-prev" type="button" data-target="#carouselExample"
+                            data-slide="prev">
+                            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                            <span class="visually-hidden">Previous</span>
+                        </button>
+                        <button id="btnNext" class="carousel-control-next" type="button" data-target="#carouselExample"
+                            data-slide="next">
+                            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                            <span class="visually-hidden">Next</span>
+                        </button>
+                    </div>
+                </div>
+                <div class="row align-items-center">
+                    <button id="btnSammary" class="btn btn-primary" data-target="#exampleModalToggle"
+                        data-toggle="modal">回答統計</button>
+                </div>
+            </div>
+
+            <!-- 回答統計 modal -->
+            <div class="modal fade" id="modalSammary" aria-hidden="true" aria-labelledby="exampleModalToggleLabel"
+                tabindex="-1">
+                <div class="modal-dialog modal-dialog-centered">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h1 class="modal-title fs-5" id="labelSammary">回答統計</h1>
+                            <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <!-- bar chart -->
+                            <canvas id="bar-chart" width="800" height="450"></canvas>
+                        </div>
+                        <div class="modal-footer">
+                            <button id="btnLeaderboard" class="btn btn-primary">查看排行榜</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 排行榜 modal -->
+            <div class="modal fade" id="modalLeaderboard" aria-hidden="true" aria-labelledby="exampleModalToggleLabel2"
+                tabindex="-1">
+                <div class="modal-dialog modal-dialog-centered">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h1 class="modal-title fs-5" id="labelLeaderboard">排行榜</h1>
+                            <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <!-- leaderboard -->
+
+                        </div>
+                        <div class="modal-footer">
+                            <button id="btnNextQ" class="btn btn-primary">To Next</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
     </div>
 
-    <script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+
+            //Init page
+            $.get("http://localhost:3000/qid")
+                .done(function (data, textStatus, jqXHR) {
+                    console.log(data);
+                    document.querySelector("#qid").textContent = (data.qid + 1) + '/' + data.qtotal;
+                });
+
+            //Events
+            document.querySelector("#btnPrev").addEventListener('click', () => {
+                $.post("http://localhost:3000/prev",
+                    { "on": false } // or {"on": true} 
+                ).done(function (data, textStatus, jqXHR) {
+                    console.log(data);
+                    document.querySelector("#qid").textContent = (data.qid + 1) + '/' + data.qtotal;
+                });
+            });
+
+            document.querySelector("#btnNext").addEventListener('click', () => {
+                $.post("http://localhost:3000/next",
+                    { "on": false } // or {"on": true} 
+                ).done(function (data, textStatus, jqXHR) {
+                    console.log(data);
+                    document.querySelector("#qid").textContent = (data.qid + 1) + '/' + data.qtotal;
+                });
+            });
+
+            document.querySelector("#btnSammary").addEventListener('click', () => {
+                $('#modalSammary').modal('show');
+
+                $.get("http://localhost:3000/qsammary")
+                    .done(function (data, textStatus, jqXHR) {
+                        console.log(data);
+
+                        // Bar chart
+                        new Chart(document.getElementById("bar-chart"), {
+                            type: 'bar',
+                            data: {
+                                labels: ["A", "B", "C", "D"],
+                                datasets: [
+                                    {
+                                        label: "Count",
+                                        backgroundColor: ["#5775a5", "#f7bf00", "#ad5576", "#7e9261"],
+                                        data: [data.resCount.a, data.resCount.b, data.resCount.c, data.resCount.d]
+                                    }
+                                ]
+                            },
+                            options: {
+                                legend: { display: false },
+                                title: {
+                                    display: false,
+                                    text: 'Title'
+                                },
+                                scales: {
+                                    yAxes: [{
+                                        ticks: {
+                                            min: 0
+                                        }
+                                    }]
+                                }
+                            }
+                        });
+                    });
+            });
+
+            document.querySelector("#btnLeaderboard").addEventListener('click', () => {
+                $('#modalSammary').modal('hide');
+                $('#modalLeaderboard').modal('show');
+
+                $.get("http://localhost:3000/qleader")
+                    .done(function (data, textStatus, jqXHR) {
+                        console.log(data);
+                    });
+            });
+
+            document.querySelector("#btnNextQ").addEventListener('click', () => {
+                $('#modalLeaderboard').modal('hide');
+                $.post("http://localhost:3000/next",
+                    { "on": false } // or {"on": true} 
+                ).done(function (data, textStatus, jqXHR) {
+                    console.log(data);
+                    document.querySelector("#qid").textContent = (data.qid + 1) + '/' + data.qtotal;
+                });
+            });
+
+
+        });
+    </script>
+
+    <!-- <script>
         document.addEventListener("DOMContentLoaded", event => {
             let keyinDom = document.querySelector('#txtInput')
             let showDom = document.querySelector('#txtShow')
@@ -60,8 +237,7 @@
             };
 
         })
-
-    </script>
+    </script> -->
 </body>
 
 </html>

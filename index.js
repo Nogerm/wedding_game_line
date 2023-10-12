@@ -6,9 +6,11 @@ const http = require('http');
 const path = require('path');
 const WebSocket = require('ws');
 
-let questionIdx = 0;
+let qId = 0;
+let qTotal = 10;
+
 let userPool = [];
-let answerPool = [
+let responsePool = [
   [],//1
   [],//2
   [],//3
@@ -20,6 +22,18 @@ let answerPool = [
   [],//9
   []//10
 ];
+const answerArray = [
+  'A',//1
+  'B',//2
+  'C',//3
+  'C',//4
+  'A',//5
+  'B',//6
+  'C',//7
+  'D',//8
+  'A',//9
+  'A'//10
+]
 
 //---------------
 // line sdk
@@ -61,20 +75,95 @@ app.listen(port, () => {
 // api
 //---------------
 
-app.get('/status', (req, res) => {
+app.get('/qid', (req, res) => {
+  res.status(200).json({ qid: qId, qtotal: qTotal });
+});
+
+app.get('/qsammary', (req, res) => {
   //const id = req.query.id;//target question id
-  res.send(questionIdx);
+  const qStatus = responsePool[qId];
+  const resCount = {
+    a: qStatus.filter(item => item.ans == 'A').length,
+    b: qStatus.filter(item => item.ans == 'B').length,
+    c: qStatus.filter(item => item.ans == 'C').length,
+    d: qStatus.filter(item => item.ans == 'D').length
+  }
+  res.status(200).json({ qid: qId, resCount: resCount });
+});
+
+app.get('/qleader', (req, res) => {
+  let correctPool = [];
+
+  const fakeResponsePool = [
+    [
+      {
+        id: 'a',
+        ans: 'A'
+      },
+      {
+        id: 'b',
+        ans: 'A'
+      },
+      {
+        id: 'c',
+        ans: 'A'
+      }
+    ],
+    [
+      {
+        id: 'a',
+        ans: 'B'
+      },
+      {
+        id: 'b',
+        ans: 'A'
+      },
+      {
+        id: 'c',
+        ans: 'A'
+      }
+    ],
+    [
+      {
+        id: 'a',
+        ans: 'C'
+      },
+      {
+        id: 'b',
+        ans: 'C'
+      },
+      {
+        id: 'c',
+        ans: 'A'
+      }
+    ]
+  ]
+
+
+  fakeResponsePool.forEach((qResArray, index) => {
+    const correctPeopleOfQ = qResArray.filter(item => item.ans == answerArray[index]);
+    correctPool = [...correctPool, ...correctPeopleOfQ];
+  });
+
+  const correctPeople = correctPool.map(item => item.id);
+
+  //count duplicated
+  const counts = {};
+  correctPeople.forEach(function (x) { counts[x] = (counts[x] || 0) + 1; });
+  console.log(JSON.stringify(counts))
+
+  res.status(200).json({ qid: qId, qleader: counts });
 });
 
 app.post('/next', (req, res) => {
   //const id = req.body.id;//target question id
-  questionIdx = questionIdx + 1;
-  res.send(questionIdx);
+  qId = qId + 1;
+  res.status(200).json({ qid: qId, qtotal: qTotal });
 });
 
 app.post('/prev', (req, res) => {
-  questionIdx = questionIdx - 1;
-  res.send(questionIdx);
+  qId = qId - 1;
+  res.status(200).json({ qid: qId, qtotal: qTotal });
 });
 
 //---------------
@@ -97,7 +186,6 @@ wss.on('connection', (ws) => {
 
   ws.on('close', () => {
     wss.clients.clear;
-    clearInterval(sendNowTime);
     console.log('[WS] socket closed');
   });
 
@@ -143,12 +231,12 @@ const handleEvent = async (event) => {
   await updateUserAnswer(userId, context)
 
   console.log("user pool: " + JSON.stringify(userPool));
-  console.log("answer pool: " + JSON.stringify(answerPool));
+  console.log("answer pool: " + JSON.stringify(responsePool));
 
   //reply user
   const echo = {
     type: 'text',
-    text: '問題' + (questionIdx + 1) + '\n已收到你的答案: ' + context
+    text: '問題' + (qId + 1) + '\n已收到你的答案: ' + context
   };
   return client.replyMessage(event.replyToken, echo);
 }
@@ -175,9 +263,13 @@ const addUserIfNotExist = (userId) => {
   })
 }
 
+const getUserById = (userId) => {
+  return userPool.find(user => user.id == userId)
+}
+
 const updateUserAnswer = async (userId, response) => {
   return new Promise(async (resolve, reject) => {
-    let lastAnswer = answerPool[questionIdx].find(item => item.id === userId);
+    let lastAnswer = responsePool[qId]?.find(item => item.id === userId);
     if (lastAnswer != undefined) {
       //already answered, update answer
       if (lastAnswer.ans != response) {
@@ -195,10 +287,22 @@ const updateUserAnswer = async (userId, response) => {
         id: userId,
         ans: response
       }
-      answerPool[questionIdx].push(newAnswer)
+      responsePool[qId].push(newAnswer)
       console.log("add new answer: " + JSON.stringify(newAnswer))
       resolve(newAnswer)
     }
+  });
+}
+
+const summaryOne = async (index) => {
+  return new Promise(async (resolve, reject) => {
+
+  });
+}
+
+const leaderBoard = async (index) => {
+  return new Promise(async (resolve, reject) => {
+
   });
 }
 
