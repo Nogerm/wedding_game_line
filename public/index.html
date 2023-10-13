@@ -33,11 +33,13 @@
             <div class="container text-center row-gap-3">
                 <div class="row align-items-stretch">
                     <h2 class="mr-auto p-2"><span>題目</span><span id="qid">1</span></h2>
-                    <button id="btnPrev" class="btn btn-secondary m-3" data-target="#carouselExample"
+                    <button id="btnAddLine" class="btn btn-secondary m-2" data-target="#exampleModalToggle"
+                        data-slide="prev">加入遊戲</button>
+                    <button id="btnPrev" class="btn btn-secondary m-2" data-target="#carouselExample"
                         data-slide="prev">上一題</button>
-                    <button id="btnNext" class="btn btn-secondary m-3" data-target="#carouselExample"
+                    <button id="btnNext" class="btn btn-secondary m-2" data-target="#carouselExample"
                         data-slide="next">下一題</button>
-                    <button id="btnSammary" class="btn btn-primary m-3" data-target="#exampleModalToggle"
+                    <button id="btnSammary" class="btn btn-primary m-2" data-target="#exampleModalToggle"
                         data-toggle="modal">回答統計</button>
                 </div>
                 <div class="row">
@@ -66,7 +68,7 @@
                 <div class="modal-dialog modal-dialog-centered modal-lg">
                     <div class="modal-content">
                         <div class="modal-header">
-                            <h1 class="modal-title fs-5" id="labelSammary">回答統計</h1>
+                            <h1 class="modal-title fs-5">回答統計</h1>
                             <button id="btnLeaderboard" class="btn btn-primary m-2">查看排行榜</button>
                         </div>
                         <div class="modal-body">
@@ -85,7 +87,7 @@
                 <div class="modal-dialog modal-dialog-centered modal-lg">
                     <div class="modal-content">
                         <div class="modal-header">
-                            <h1 class="modal-title fs-5" id="labelLeaderboard">排行榜</h1>
+                            <h1 class="modal-title fs-5">排行榜</h1>
                             <button id="btnNextQ" class="btn btn-primary m-2">進入下一題</button>
                         </div>
                         <div class="modal-body">
@@ -95,6 +97,25 @@
                     </div>
                 </div>
             </div>
+
+            <!-- 加入 Line -->
+            <div class="modal fade bd-example-modal-lg" id="addLine" aria-hidden="true"
+                aria-labelledby="exampleModalToggleLabel3" tabindex="-1">
+                <div class="modal-dialog modal-dialog-centered modal-lg">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h1 class="modal-title fs-5">加入遊戲</h1>
+                        </div>
+                        <div class="modal-body">
+                            <!-- Images -->
+                            <div class="mr-auto">
+                                <img src="./images/qrcode.png">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
 
         </div>
 
@@ -122,6 +143,10 @@
                 });
 
             //Events
+            document.querySelector("#btnAddLine").addEventListener('click', () => {
+                $('#addLine').modal('show');
+            });
+
             document.querySelector("#btnPrev").addEventListener('click', () => {
                 fetch(HOST + "/prev", {
                     method: 'POST',
