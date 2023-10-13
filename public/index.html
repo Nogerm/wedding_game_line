@@ -112,13 +112,13 @@
         $(document).ready(function () {
 
             //Init page
-            $.get("http://localhost:3000/qid")
+            $.get("https://weddinggamebackend.azurewebsites.net:3000/qid")
                 .done(function (data, textStatus, jqXHR) {
                     console.log(data);
                     document.querySelector("#qid").textContent = (data.qid + 1) + '/' + data.qtotal;
                 });
 
-            fetch("http://localhost:3000/qid", {
+            fetch("https://weddinggamebackend.azurewebsites.net::3000/qid", {
                 method: 'GET',
                 headers: {
                     accept: 'application/json',
