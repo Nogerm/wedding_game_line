@@ -194,7 +194,7 @@ const handleEvent = async (event) => {
     return Promise.resolve(null);
   }
 
-  const context = await event.message.text;
+  const context = parseContext(await event.message.text);
   console.log("context: " + context)
   if (context !== 'A' && context !== 'B' && context !== 'C' && context !== 'D') {
     // irrelavent response
@@ -221,6 +221,15 @@ const handleEvent = async (event) => {
     text: '問題' + (qId + 1) + '\n已收到你的答案: ' + context
   };
   return client.replyMessage(event.replyToken, echo);
+}
+
+const parseContext = (input) => {
+  upperInput = input.toUpperCase();
+  if (upperInput == 'Ａ') return 'A';
+  if (upperInput == 'Ｂ') return 'B';
+  if (upperInput == 'Ｃ') return 'C';
+  if (upperInput == 'Ｄ') return 'D';
+  return upperInput;
 }
 
 const addUserIfNotExist = (userId) => {
