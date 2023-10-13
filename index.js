@@ -119,9 +119,11 @@ app.get('/qleader', async (req, res) => {
   const userIds = Object.keys(counts)
 
   const userCounts = userIds.map(userId => {
+    const user = getUserById(userId)
     const obj = {
       id: userId,
-      avatar: getUserById(userId).avatarUrl,
+      name: user.name,
+      avatar: user.avatarUrl,
       score: counts[userId]
     }
     return obj
@@ -230,10 +232,10 @@ const addUserIfNotExist = (userId) => {
     } else {
       //add new user
       const user = await client.getProfile(userId);
-      const userAvatarUrl = user.pictureUrl;
       const newUser = {
         id: userId,
-        avatarUrl: userAvatarUrl
+        avatarUrl: user.pictureUrl,
+        name: user.displayName
       }
       userPool.push(newUser);
       resolve(newUser)
