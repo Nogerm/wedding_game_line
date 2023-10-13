@@ -25,41 +25,38 @@
 <body>
     <div id="messages" class=" maincontainer">
 
-        <div class="centered">
+        <div class="centered p-2">
             <!-- <textarea id="txtShow" disabled></textarea> -->
             <!-- <input id="txtInput" type="text">
             <button id="btnSend">送出</button> -->
 
-            <div class="container text-center  row-gap-3">
+            <div class="container text-center row-gap-3">
                 <div class="row align-items-stretch">
                     <h2 class="mr-auto p-2"><span>題目</span><span id="qid">1</span></h2>
+                    <button id="btnPrev" class="btn btn-secondary m-3" data-target="#carouselExample"
+                        data-slide="prev">上一題</button>
+                    <button id="btnNext" class="btn btn-secondary m-3" data-target="#carouselExample"
+                        data-slide="next">下一題</button>
                     <button id="btnSammary" class="btn btn-primary m-3" data-target="#exampleModalToggle"
                         data-toggle="modal">回答統計</button>
                 </div>
                 <div class="row">
-                    <div id="carouselExample" class="carousel slide">
-                        <div class="carousel-inner">
-                            <div class="carousel-item active">
-                                <img src="./images/demo.png" class="d-block w-100" alt="...">
-                            </div>
-                            <div class="carousel-item">
-                                <img src="./images/demo.png" class="d-block w-100" alt="...">
-                            </div>
-                            <div class="carousel-item">
-                                <img src="./images/demo.png" class="d-block w-100" alt="...">
+                    <div class="container p-3">
+                        <div id="carouselExample" class="carousel slide" data-ride="carousel">
+                            <div class="carousel-inner">
+                                <div class="carousel-item active ">
+                                    <img src="./images/demo.png" class="img-fluid" alt="...">
+                                </div>
+                                <div class="carousel-item">
+                                    <img src="./images/demo.png" class="img-fluid" alt="...">
+                                </div>
+                                <div class="carousel-item">
+                                    <img src="./images/demo.png" class="img-fluid" alt="...">
+                                </div>
                             </div>
                         </div>
-                        <button id="btnPrev" class="carousel-control-prev" type="button" data-target="#carouselExample"
-                            data-slide="prev">
-                            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                            <span class="visually-hidden">Previous</span>
-                        </button>
-                        <button id="btnNext" class="carousel-control-next" type="button" data-target="#carouselExample"
-                            data-slide="next">
-                            <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                            <span class="visually-hidden">Next</span>
-                        </button>
                     </div>
+
                 </div>
             </div>
 
@@ -74,7 +71,9 @@
                         </div>
                         <div class="modal-body">
                             <!-- bar chart -->
-                            <canvas id="bar-chart" width="800" height="450"></canvas>
+                            <div class="container p-3">
+                                <canvas id="bar-chart" width="800" height="450"></canvas>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -105,11 +104,9 @@
 
             //Init page
             fetch("https://weddinggamebackend.azurewebsites.net/qid", {
-                method: 'GET',
                 headers: {
                     accept: 'application/json',
-                },
-                mode: 'no-cors'
+                }
             })
                 .then(response => {
                     return response.json();
