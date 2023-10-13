@@ -26,9 +26,9 @@
     <div id="messages" class=" maincontainer">
 
         <div class="centered">
-            <!-- <textarea id="txtShow" disabled></textarea>
+            <!-- <textarea id="txtShow" disabled></textarea> -->
             <input id="txtInput" type="text">
-            <button id="btnSend">送出</button> -->
+            <button id="btnSend">送出</button>
 
             <div class="container text-center  row-gap-3">
                 <div class="row align-items-center">
@@ -214,6 +214,28 @@
 
 
         });
+
+        let keyinDom = document.querySelector('#txtInput')
+        document.querySelector("#btnSend").addEventListener('click', () => {
+            let port = keyinDom.value;
+
+            fetch("http://localhost:" + port + "/qid", {
+                method: 'GET',
+                headers: {
+                    accept: 'application/json',
+                },
+                mode: 'no-cors'
+            })
+                .then(response => {
+                    return response.json();
+                })
+                .then(data => {
+                    console.log(data);
+                })
+                .catch((err) => {
+                    console.log('Error: ' + err);
+                });
+        })
     </script>
 
     <!-- <script>
