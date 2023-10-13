@@ -112,12 +112,6 @@
         $(document).ready(function () {
 
             //Init page
-            $.get("https://weddinggamebackend.azurewebsites.net/qid")
-                .done(function (data, textStatus, jqXHR) {
-                    console.log(data);
-                    document.querySelector("#qid").textContent = (data.qid + 1) + '/' + data.qtotal;
-                });
-
             fetch("https://weddinggamebackend.azurewebsites.net/qid", {
                 method: 'GET',
                 headers: {
@@ -130,6 +124,7 @@
                 })
                 .then(data => {
                     console.log(data);
+                    document.querySelector("#qid").textContent = (data.qid + 1) + '/' + data.qtotal;
                 })
                 .catch((err) => {
                     console.log('Error: ' + err);
@@ -137,30 +132,59 @@
 
             //Events
             document.querySelector("#btnPrev").addEventListener('click', () => {
-                $.post("http://localhost/prev",
-                    { "on": false } // or {"on": true} 
-                ).done(function (data, textStatus, jqXHR) {
-                    console.log(data);
-                    document.querySelector("#qid").textContent = (data.qid + 1) + '/' + data.qtotal;
-                });
+                fetch("https://weddinggamebackend.azurewebsites.net/prev", {
+                    method: 'POST',
+                    headers: {
+                        accept: 'application/json',
+                    },
+                    data: { "on": false } // or {"on": true} 
+                })
+                    .then(response => {
+                        return response.json();
+                    })
+                    .then(data => {
+                        console.log(data);
+                        document.querySelector("#qid").textContent = (data.qid + 1) + '/' + data.qtotal;
+                    })
+                    .catch((err) => {
+                        console.log('Error: ' + err);
+                    });
             });
 
             document.querySelector("#btnNext").addEventListener('click', () => {
-                $.post("http://localhost/next",
-                    { "on": false } // or {"on": true} 
-                ).done(function (data, textStatus, jqXHR) {
-                    console.log(data);
-                    document.querySelector("#qid").textContent = (data.qid + 1) + '/' + data.qtotal;
-                });
+                fetch("https://weddinggamebackend.azurewebsites.net/next", {
+                    method: 'POST',
+                    headers: {
+                        accept: 'application/json',
+                    },
+                    data: { "on": false } // or {"on": true} 
+                })
+                    .then(response => {
+                        return response.json();
+                    })
+                    .then(data => {
+                        console.log(data);
+                        document.querySelector("#qid").textContent = (data.qid + 1) + '/' + data.qtotal;
+                    })
+                    .catch((err) => {
+                        console.log('Error: ' + err);
+                    });
             });
 
             document.querySelector("#btnSammary").addEventListener('click', () => {
                 $('#modalSammary').modal('show');
 
-                $.get("http://localhost:3000/qsammary")
-                    .done(function (data, textStatus, jqXHR) {
+                fetch("https://weddinggamebackend.azurewebsites.net/qsammary", {
+                    method: 'GET',
+                    headers: {
+                        accept: 'application/json',
+                    }
+                })
+                    .then(response => {
+                        return response.json();
+                    })
+                    .then(data => {
                         console.log(data);
-
                         // Bar chart
                         new Chart(document.getElementById("bar-chart"), {
                             type: 'bar',
@@ -189,6 +213,9 @@
                                 }
                             }
                         });
+                    })
+                    .catch((err) => {
+                        console.log('Error: ' + err);
                     });
             });
 
@@ -196,20 +223,43 @@
                 $('#modalSammary').modal('hide');
                 $('#modalLeaderboard').modal('show');
 
-                $.get("http://localhost:3000/qleader")
-                    .done(function (data, textStatus, jqXHR) {
+                fetch("https://weddinggamebackend.azurewebsites.net/qleader", {
+                    method: 'GET',
+                    headers: {
+                        accept: 'application/json',
+                    }
+                })
+                    .then(response => {
+                        return response.json();
+                    })
+                    .then(data => {
                         console.log(data);
+
+                    })
+                    .catch((err) => {
+                        console.log('Error: ' + err);
                     });
             });
 
             document.querySelector("#btnNextQ").addEventListener('click', () => {
                 $('#modalLeaderboard').modal('hide');
-                $.post("http://localhost:3000/next",
-                    { "on": false } // or {"on": true} 
-                ).done(function (data, textStatus, jqXHR) {
-                    console.log(data);
-                    document.querySelector("#qid").textContent = (data.qid + 1) + '/' + data.qtotal;
-                });
+                fetch("https://weddinggamebackend.azurewebsites.net/next", {
+                    method: 'POST',
+                    headers: {
+                        accept: 'application/json',
+                    },
+                    data: { "on": false } // or {"on": true} 
+                })
+                    .then(response => {
+                        return response.json();
+                    })
+                    .then(data => {
+                        console.log(data);
+                        document.querySelector("#qid").textContent = (data.qid + 1) + '/' + data.qtotal;
+                    })
+                    .catch((err) => {
+                        console.log('Error: ' + err);
+                    });
             });
 
 
