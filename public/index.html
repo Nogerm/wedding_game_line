@@ -27,12 +27,14 @@
 
         <div class="centered">
             <!-- <textarea id="txtShow" disabled></textarea> -->
-            <input id="txtInput" type="text">
-            <button id="btnSend">送出</button>
+            <!-- <input id="txtInput" type="text">
+            <button id="btnSend">送出</button> -->
 
             <div class="container text-center  row-gap-3">
-                <div class="row align-items-center">
-                    <h2><span>題目</span><span id="qid">1</span></h2>
+                <div class="row align-items-stretch">
+                    <h2 class="mr-auto p-2"><span>題目</span><span id="qid">1</span></h2>
+                    <button id="btnSammary" class="btn btn-primary m-3" data-target="#exampleModalToggle"
+                        data-toggle="modal">回答統計</button>
                 </div>
                 <div class="row">
                     <div id="carouselExample" class="carousel slide">
@@ -59,10 +61,6 @@
                         </button>
                     </div>
                 </div>
-                <div class="row align-items-center">
-                    <button id="btnSammary" class="btn btn-primary" data-target="#exampleModalToggle"
-                        data-toggle="modal">回答統計</button>
-                </div>
             </div>
 
             <!-- 回答統計 modal -->
@@ -72,14 +70,11 @@
                     <div class="modal-content">
                         <div class="modal-header">
                             <h1 class="modal-title fs-5" id="labelSammary">回答統計</h1>
-                            <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close"></button>
+                            <button id="btnLeaderboard" class="btn btn-primary m-2">查看排行榜</button>
                         </div>
                         <div class="modal-body">
                             <!-- bar chart -->
                             <canvas id="bar-chart" width="800" height="450"></canvas>
-                        </div>
-                        <div class="modal-footer">
-                            <button id="btnLeaderboard" class="btn btn-primary">查看排行榜</button>
                         </div>
                     </div>
                 </div>
@@ -92,14 +87,11 @@
                     <div class="modal-content">
                         <div class="modal-header">
                             <h1 class="modal-title fs-5" id="labelLeaderboard">排行榜</h1>
-                            <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close"></button>
+                            <button id="btnNextQ" class="btn btn-primary m-2">進入下一題</button>
                         </div>
                         <div class="modal-body">
                             <!-- leaderboard -->
-
-                        </div>
-                        <div class="modal-footer">
-                            <button id="btnNextQ" class="btn btn-primary">To Next</button>
+                            <ul id="leaderboard" class="list-group"></ul>
                         </div>
                     </div>
                 </div>
@@ -223,7 +215,7 @@
                 $('#modalSammary').modal('hide');
                 $('#modalLeaderboard').modal('show');
 
-                fetch("https://weddinggamebackend.azurewebsites.net/qleader", {
+                fetch("http://localhost:3000/qleader", {
                     method: 'GET',
                     headers: {
                         accept: 'application/json',
@@ -234,6 +226,36 @@
                     })
                     .then(data => {
                         console.log(data);
+                        const list = document.querySelector("#leaderboard");
+
+                        data?.qleader.forEach((element, index) => {
+                            let rankNum = document.createElement("div");
+                            rankNum.className = "rank";
+                            rankNum.textContent = index + 1;
+
+                            let avatar = document.createElement("img");
+                            avatar.className = "avatar";
+                            avatar.scr = element.avatarUrl;
+
+                            let contentContainer = document.createElement("div");
+                            contentContainer.className = "media-body";
+
+                            let username = document.createElement("h3");
+                            username.textContent = element.name;
+
+                            let userscore = document.createElement("h6");
+                            userscore.textContent = "答對 " + element.score + " 題";
+
+                            contentContainer.appendChild(username);
+                            contentContainer.appendChild(userscore);
+
+                            let li = document.createElement("li");
+                            li.className = "list-group-item d-flex align-items-center"
+                            li.appendChild(rankNum);
+                            li.appendChild(avatar);
+                            li.appendChild(contentContainer);
+                            list.appendChild(li);
+                        });
 
                     })
                     .catch((err) => {
@@ -264,28 +286,6 @@
 
 
         });
-
-        let keyinDom = document.querySelector('#txtInput')
-        document.querySelector("#btnSend").addEventListener('click', () => {
-            let port = keyinDom.value;
-
-            fetch(process.env.AZURE_HOST + "/qid", {
-                method: 'GET',
-                headers: {
-                    accept: 'application/json',
-                },
-                mode: 'no-cors'
-            })
-                .then(response => {
-                    return response.json();
-                })
-                .then(data => {
-                    console.log(data);
-                })
-                .catch((err) => {
-                    console.log('Error: ' + err);
-                });
-        })
     </script>
 
     <!-- <script>

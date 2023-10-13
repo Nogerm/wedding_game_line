@@ -40,13 +40,13 @@ const answerArray = [
 // line sdk
 //---------------
 // create LINE SDK config from env variables
-const config = {
-  channelAccessToken: process.env.CHANNEL_ACCESS_TOKEN,
-  channelSecret: process.env.CHANNEL_SECRET,
-};
+// const config = {
+//   channelAccessToken: process.env.CHANNEL_ACCESS_TOKEN,
+//   channelSecret: process.env.CHANNEL_SECRET,
+// };
 
 // create LINE SDK client
-const client = new line.Client(config);
+// const client = new line.Client(config);
 
 //---------------
 // express server
@@ -58,15 +58,15 @@ const app = express();
 //app.use(cors());
 
 // register a webhook handler with middleware
-app.post('/webhook', line.middleware(config), (req, res) => {
-  Promise
-    .all(req.body.events.map(handleEvent))
-    .then((result) => res.json(result))
-    .catch((err) => {
-      console.error(err);
-      res.status(500).end();
-    });
-});
+// app.post('/webhook', line.middleware(config), (req, res) => {
+//   Promise
+//     .all(req.body.events.map(handleEvent))
+//     .then((result) => res.json(result))
+//     .catch((err) => {
+//       console.error(err);
+//       res.status(500).end();
+//     });
+// });
 
 // listen on port
 const port = process.env.PORT || 3000;
@@ -108,7 +108,6 @@ app.get('/qleader', async (req, res) => {
     const correctPeopleOfQ = qResArray.filter(item => item.ans == answerArray[index]);
     correctPool = [...correctPool, ...correctPeopleOfQ];
   });
-
   const correctPeople = correctPool.map(item => item.id);
 
   //count duplicated
@@ -116,8 +115,8 @@ app.get('/qleader', async (req, res) => {
   correctPeople.forEach(function (x) { counts[x] = (counts[x] || 0) + 1; });
   console.log(JSON.stringify(counts))
 
+  //generate result
   const userIds = Object.keys(counts)
-
   const userCounts = userIds.map(userId => {
     const user = getUserById(userId)
     const obj = {
@@ -128,6 +127,9 @@ app.get('/qleader', async (req, res) => {
     }
     return obj
   })
+
+  //sort result
+  userCounts.sort((a, b) => b.score - a.score);
 
   console.log("[Express] Get leaderboard: " + JSON.stringify(userCounts));
   res.status(200).json({ qid: qId, qleader: userCounts });
