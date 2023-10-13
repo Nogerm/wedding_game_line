@@ -224,7 +224,7 @@ const handleEvent = async (event) => {
 }
 
 const parseContext = (input) => {
-  upperInput = input.toUpperCase();
+  const upperInput = input.toUpperCase();
   if (upperInput == 'Ａ') return 'A';
   if (upperInput == 'Ｂ') return 'B';
   if (upperInput == 'Ｃ') return 'C';
