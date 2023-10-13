@@ -113,7 +113,7 @@ app.get('/qleader', async (req, res) => {
   //count duplicated
   const counts = {};
   correctPeople.forEach(function (x) { counts[x] = (counts[x] || 0) + 1; });
-  console.log(JSON.stringify(counts))
+  console.log("Correct answer count" + JSON.stringify(counts))
 
   //generate result
   const userIds = Object.keys(counts)

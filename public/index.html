@@ -228,34 +228,40 @@
                         console.log(data);
                         const list = document.querySelector("#leaderboard");
 
-                        data?.qleader.forEach((element, index) => {
-                            let rankNum = document.createElement("div");
-                            rankNum.className = "rank";
-                            rankNum.textContent = index + 1;
+                        if (data?.qleader.length == 0) {
+                            //clear list
+                            list.replaceChildren()
+                        } else {
+                            //generate list
+                            data?.qleader.forEach((element, index) => {
+                                let rankNum = document.createElement("div");
+                                rankNum.className = "rank";
+                                rankNum.textContent = index + 1;
 
-                            let avatar = document.createElement("img");
-                            avatar.className = "avatar";
-                            avatar.src = element.avatarUrl;
+                                let avatar = document.createElement("img");
+                                avatar.className = "avatar";
+                                avatar.src = element.avatarUrl;
 
-                            let contentContainer = document.createElement("div");
-                            contentContainer.className = "media-body";
+                                let contentContainer = document.createElement("div");
+                                contentContainer.className = "media-body";
 
-                            let username = document.createElement("h3");
-                            username.textContent = element.name;
+                                let username = document.createElement("h3");
+                                username.textContent = element.name;
 
-                            let userscore = document.createElement("h6");
-                            userscore.textContent = "答對 " + element.score + " 題";
+                                let userscore = document.createElement("h6");
+                                userscore.textContent = "答對 " + element.score + " 題";
 
-                            contentContainer.appendChild(username);
-                            contentContainer.appendChild(userscore);
+                                contentContainer.appendChild(username);
+                                contentContainer.appendChild(userscore);
 
-                            let li = document.createElement("li");
-                            li.className = "list-group-item d-flex align-items-center"
-                            li.appendChild(rankNum);
-                            li.appendChild(avatar);
-                            li.appendChild(contentContainer);
-                            list.appendChild(li);
-                        });
+                                let li = document.createElement("li");
+                                li.className = "list-group-item d-flex align-items-center"
+                                li.appendChild(rankNum);
+                                li.appendChild(avatar);
+                                li.appendChild(contentContainer);
+                                list.appendChild(li);
+                            });
+                        }
 
                     })
                     .catch((err) => {
