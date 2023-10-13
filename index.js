@@ -122,7 +122,7 @@ app.get('/qleader', async (req, res) => {
     const obj = {
       id: userId,
       name: user.name,
-      avatar: user.avatarUrl,
+      avatarUrl: user.avatarUrl,
       score: counts[userId]
     }
     return obj
