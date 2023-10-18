@@ -145,7 +145,7 @@ app.get('/qsammary', (req, res) => {
     D: qStatus.filter(item => item.ans == 'D').length
   }
   const ans = qArray[currentQid].ans
-  const rightNum = resCount[ans].length || 0;
+  const rightNum = resCount[ans];
   const wrongNum = qStatus.length - rightNum;
   console.log("[Express] Get sammary: " + JSON.stringify(resCount));
   console.log("[Express] right: " + rightNum + "\nwrong: " + wrongNum);
