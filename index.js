@@ -144,11 +144,12 @@ app.get('/qsammary', (req, res) => {
     C: qStatus.filter(item => item.ans == 'C').length,
     D: qStatus.filter(item => item.ans == 'D').length
   }
-  const rightNum = resCount[qArray[currentQid].ans].length;
+  const ans = qArray[currentQid].ans
+  const rightNum = resCount[ans].length;
   const wrongNum = qStatus.length - rightNum;
   console.log("[Express] Get sammary: " + JSON.stringify(resCount));
   console.log("[Express] right: " + rightNum + "\nwrong: " + wrongNum);
-  res.status(200).json({ qid: currentQid, resCount: resCount });
+  res.status(200).json({ qid: currentQid, resCount: resCount, ans: ans, rightNum: rightNum, wrongNum: wrongNum });
 });
 
 app.get('/qleader', async (req, res) => {
