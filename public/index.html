@@ -221,6 +221,23 @@
                 $('#modalSammary').modal('hide');
                 $('#modalLeaderboard').modal('hide');
 
+                fetch(HOST + "/qans", {
+                    method: 'GET',
+                    headers: {
+                        accept: 'application/json',
+                    }
+                })
+                    .then(response => {
+                        return response.json();
+                    })
+                    .then(data => {
+                        console.log(data);
+                        document.querySelector("#img-answer").src = data.qans.ansImg;
+                    })
+                    .catch((err) => {
+                        console.log('Error: ' + err);
+                    });
+
             });
 
             document.querySelector("#btnSammary").addEventListener('click', () => {
