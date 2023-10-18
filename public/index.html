@@ -39,47 +39,36 @@
                         data-slide="prev">上一題</button>
                     <button id="btnNext" class="btn btn-secondary m-2" data-target="#carouselExample"
                         data-slide="next">下一題</button>
-                    <button id="btnSammary" class="btn btn-primary m-2" data-target="#exampleModalToggle"
-                        data-toggle="modal">回答統計</button>
+                    <button id="btnAnswer" class="btn btn-primary m-2" data-target="#exampleModalToggle"
+                        data-toggle="modal">看答案</button>
                 </div>
                 <div class="row">
                     <div class="container p-3">
                         <div id="carouselExample" class="carousel slide" data-ride="carousel" data-interval="false">
-                            <div class="carousel-inner">
-                                <div class="carousel-item active ">
-                                    <img src="./images/Q1.png" class="img-fluid" alt="...">
-                                </div>
-                                <div class="carousel-item">
-                                    <img src="./images/Q2.png" class="img-fluid" alt="...">
-                                </div>
-                                <div class="carousel-item">
-                                    <img src="./images/Q3.png" class="img-fluid" alt="...">
-                                </div>
-                                <div class="carousel-item">
-                                    <img src="./images/Q4.png" class="img-fluid" alt="...">
-                                </div>
-                                <div class="carousel-item">
-                                    <img src="./images/Q5.png" class="img-fluid" alt="...">
-                                </div>
-                                <div class="carousel-item">
-                                    <img src="./images/Q6.png" class="img-fluid" alt="...">
-                                </div>
-                                <div class="carousel-item">
-                                    <img src="./images/Q7.png" class="img-fluid" alt="...">
-                                </div>
-                                <div class="carousel-item">
-                                    <img src="./images/Q8.png" class="img-fluid" alt="...">
-                                </div>
-                                <div class="carousel-item">
-                                    <img src="./images/Q9.png" class="img-fluid" alt="...">
-                                </div>
-                                <div class="carousel-item">
-                                    <img src="./images/Q10.png" class="img-fluid" alt="...">
-                                </div>
+                            <div id="carouselContent" class="carousel-inner">
                             </div>
                         </div>
                     </div>
 
+                </div>
+            </div>
+
+            <!-- 看答案 modal -->
+            <div class="modal fade bd-example-modal-lg" id="modalAnswer" aria-hidden="true"
+                aria-labelledby="exampleModalToggleLabel" tabindex="-1">
+                <div class="modal-dialog modal-dialog-centered modal-lg">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h1 class="modal-title fs-5">看答案</h1>
+                            <button id="btnSammary" class="btn btn-primary m-2">回答統計</button>
+                        </div>
+                        <div class="modal-body">
+                            <!-- image answer -->
+                            <div class="container p-3">
+                                <img id="img-answer" src="" class="img-fluid" alt="...">
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
 
@@ -145,9 +134,10 @@
     <script type="text/javascript">
         $(document).ready(function () {
             const HOST = "https://weddinggamebackend.azurewebsites.net";
+            //const HOST = "http://localhost:3000";
 
             //Init page
-            fetch(HOST + "/qid", {
+            fetch(HOST + "/init", {
                 headers: {
                     accept: 'application/json',
                 }
@@ -157,7 +147,25 @@
                 })
                 .then(data => {
                     console.log(data);
-                    document.querySelector("#qid").textContent = (data.qid + 1) + '/' + data.qtotal;
+
+                    //update question index
+                    document.querySelector("#qid").textContent = (data.qid + 1) + '/' + data.qArray.length;
+
+                    //generate question list
+                    const qList = document.querySelector("#carouselContent")
+
+                    data?.qArray.forEach((element, index) => {
+                        const qItem = document.createElement("div");
+                        if (index == data.qid) qItem.className = "carousel-item active";
+                        else qItem.className = "carousel-item";
+
+                        const qImg = document.createElement("img");
+                        qImg.className = "img-fluid";
+                        qImg.src = element.qImg;
+
+                        qItem.appendChild(qImg);
+                        qList.appendChild(qItem);
+                    });
                 })
                 .catch((err) => {
                     console.log('Error: ' + err);
@@ -208,8 +216,17 @@
                     });
             });
 
+            document.querySelector("#btnAnswer").addEventListener('click', () => {
+                $('#modalAnswer').modal('show');
+                $('#modalSammary').modal('hide');
+                $('#modalLeaderboard').modal('hide');
+
+            });
+
             document.querySelector("#btnSammary").addEventListener('click', () => {
+                $('#modalAnswer').modal('hide');
                 $('#modalSammary').modal('show');
+                $('#modalLeaderboard').modal('hide');
 
                 fetch(HOST + "/qsammary", {
                     method: 'GET',
@@ -257,6 +274,7 @@
             });
 
             document.querySelector("#btnLeaderboard").addEventListener('click', () => {
+                $('#modalAnswer').modal('hide');
                 $('#modalSammary').modal('hide');
                 $('#modalLeaderboard').modal('show');
 
@@ -278,21 +296,21 @@
 
                         //generate list
                         data?.qleader.forEach((element, index) => {
-                            let rankNum = document.createElement("div");
+                            const rankNum = document.createElement("div");
                             rankNum.className = "rank";
                             rankNum.textContent = index + 1;
 
-                            let avatar = document.createElement("img");
+                            const avatar = document.createElement("img");
                             avatar.className = "avatar";
                             avatar.src = element.avatarUrl;
 
-                            let contentContainer = document.createElement("div");
+                            const contentContainer = document.createElement("div");
                             contentContainer.className = "media-body";
 
-                            let username = document.createElement("h3");
+                            const username = document.createElement("h3");
                             username.textContent = element.name;
 
-                            let userscore = document.createElement("h6");
+                            const userscore = document.createElement("h6");
                             userscore.textContent = "答對 " + element.score + " 題";
 
                             contentContainer.appendChild(username);

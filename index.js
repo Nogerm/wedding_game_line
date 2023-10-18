@@ -7,8 +7,7 @@ const path = require('path');
 const WebSocket = require('ws');
 const cors = require('cors');
 
-let qId = 0;
-let qTotal = 10;
+let currentQid = 0;
 
 let userPool = [];
 let responsePool = [
@@ -23,17 +22,57 @@ let responsePool = [
   [],//9
   []//10
 ];
-const answerArray = [
-  'A',//1
-  'B',//2
-  'C',//3
-  'C',//4
-  'A',//5
-  'B',//6
-  'C',//7
-  'D',//8
-  'A',//9
-  'A'//10
+const qArray = [
+  {//1
+    qImg: "./images/Q1.png",
+    ansImg: "./images/A1.png",
+    ans: 'A'
+  },
+  {//2
+    qImg: "./images/Q2.png",
+    ansImg: "./images/A2.png",
+    ans: 'A'
+  },
+  {//3
+    qImg: "./images/Q3.png",
+    ansImg: "./images/A3.png",
+    ans: 'A'
+  },
+  {//4
+    qImg: "./images/Q4.png",
+    ansImg: "./images/A4.png",
+    ans: 'A'
+  },
+  {//5
+    qImg: "./images/Q5.png",
+    ansImg: "./images/A5.png",
+    ans: 'A'
+  },
+  {//6
+    qImg: "./images/Q6.png",
+    ansImg: "./images/A6.png",
+    ans: 'A'
+  },
+  {//7
+    qImg: "./images/Q7.png",
+    ansImg: "./images/A7.png",
+    ans: 'A'
+  },
+  {//8
+    qImg: "./images/Q8.png",
+    ansImg: "./images/A8.png",
+    ans: 'A'
+  },
+  {//9
+    qImg: "./images/Q9.png",
+    ansImg: "./images/A9.png",
+    ans: 'A'
+  },
+  {//10
+    qImg: "./images/Q10.png",
+    ansImg: "./images/A10.png",
+    ans: 'A'
+  },
 ]
 
 //---------------
@@ -83,15 +122,22 @@ app.use((_req, res, next) => {
   next();
 });
 
-app.get('/qid', (req, res) => {
-  console.log("[Express] Get qid: " + qId + "\nq total: " + qTotal);
-  // res.setHeader('Access-Control-Allow-Origin', 'http://localhost:3000');
-  res.status(200).json({ qid: qId, qtotal: qTotal });
+app.get('/init', (req, res) => {
+  console.log("[Express] Get qid: " + currentQid + "\nq total: " + qArray.length);
+
+  //reset question
+  currentQid = 0;
+
+  res.status(200).json({ qid: currentQid, qArray: qArray });
+});
+
+app.get('/qans', (req, res) => {
+  res.status(200).json({ qid: currentQid, qans: qArray[currentQid] });
 });
 
 app.get('/qsammary', (req, res) => {
   //const id = req.query.id;//target question id
-  const qStatus = responsePool[qId];
+  const qStatus = responsePool[currentQid];
   const resCount = {
     a: qStatus.filter(item => item.ans == 'A').length,
     b: qStatus.filter(item => item.ans == 'B').length,
@@ -99,13 +145,13 @@ app.get('/qsammary', (req, res) => {
     d: qStatus.filter(item => item.ans == 'D').length
   }
   console.log("[Express] Get sammary: " + JSON.stringify(resCount));
-  res.status(200).json({ qid: qId, resCount: resCount });
+  res.status(200).json({ qid: currentQid, resCount: resCount });
 });
 
 app.get('/qleader', async (req, res) => {
   let correctPool = [];
   responsePool.forEach((qResArray, index) => {
-    const correctPeopleOfQ = qResArray.filter(item => item.ans == answerArray[index]);
+    const correctPeopleOfQ = qResArray.filter(item => item.ans == qArray[index].ans);
     correctPool = [...correctPool, ...correctPeopleOfQ];
   });
   const correctPeople = correctPool.map(item => item.id);
@@ -132,20 +178,24 @@ app.get('/qleader', async (req, res) => {
   userCounts.sort((a, b) => b.score - a.score);
 
   console.log("[Express] Get leaderboard: " + JSON.stringify(userCounts));
-  res.status(200).json({ qid: qId, qleader: userCounts });
+  res.status(200).json({ qid: currentQid, qleader: userCounts });
+});
+
+app.post('/reset', (req, res) => {
+  currentQid = 0;
 });
 
 app.post('/next', (req, res) => {
   //const id = req.body.id;//target question id
-  qId = qId + 1;
-  console.log("[Express] next page: " + qId);
-  res.status(200).json({ qid: qId, qtotal: qTotal });
+  currentQid = currentQid + 1;
+  console.log("[Express] next page: " + currentQid);
+  res.status(200).json({ qid: currentQid, qtotal: qArray.length });
 });
 
 app.post('/prev', (req, res) => {
-  qId = qId - 1;
-  console.log("[Express] prev page: " + qId);
-  res.status(200).json({ qid: qId, qtotal: qTotal });
+  currentQid = currentQid - 1;
+  console.log("[Express] prev page: " + currentQid);
+  res.status(200).json({ qid: currentQid, qtotal: qArray.length });
 });
 
 //---------------
@@ -218,7 +268,7 @@ const handleEvent = async (event) => {
   //reply user
   const echo = {
     type: 'text',
-    text: '問題' + (qId + 1) + '\n已收到你的答案: ' + context
+    text: '問題' + (currentQid + 1) + '\n已收到你的答案: ' + context
   };
   return client.replyMessage(event.replyToken, echo);
 }
@@ -260,7 +310,7 @@ const getUserById = (userId) => {
 
 const updateUserAnswer = async (userId, response) => {
   return new Promise(async (resolve, reject) => {
-    let lastAnswer = responsePool[qId]?.find(item => item.id === userId);
+    let lastAnswer = responsePool[currentQid]?.find(item => item.id === userId);
     if (lastAnswer != undefined) {
       //already answered, update answer
       if (lastAnswer.ans != response) {
@@ -278,7 +328,7 @@ const updateUserAnswer = async (userId, response) => {
         id: userId,
         ans: response
       }
-      responsePool[qId].push(newAnswer)
+      responsePool[currentQid].push(newAnswer)
       console.log("add new answer: " + JSON.stringify(newAnswer))
       resolve(newAnswer)
     }
