@@ -148,7 +148,6 @@ app.get('/qsammary', (req, res) => {
   const rightNum = resCount[ans];
   const wrongNum = qStatus.length - rightNum;
   console.log("[Express] Get sammary: " + JSON.stringify(resCount));
-  console.log("[Express] right: " + rightNum + "\nwrong: " + wrongNum);
   res.status(200).json({ qid: currentQid, resCount: resCount, ans: ans, right: rightNum, wrong: wrongNum });
 });
 
