@@ -26,12 +26,12 @@ const qArray = [
   {//1
     qImg: "./images/Q1.png",
     ansImg: "./images/A1.png",
-    ans: 'A'
+    ans: 'B'
   },
   {//2
     qImg: "./images/Q2.png",
     ansImg: "./images/A2.png",
-    ans: 'A'
+    ans: 'B'
   },
   {//3
     qImg: "./images/Q3.png",
@@ -51,27 +51,27 @@ const qArray = [
   {//6
     qImg: "./images/Q6.png",
     ansImg: "./images/A6.png",
-    ans: 'A'
+    ans: 'C'
   },
   {//7
     qImg: "./images/Q7.png",
     ansImg: "./images/A7.png",
-    ans: 'A'
+    ans: 'D'
   },
   {//8
     qImg: "./images/Q8.png",
     ansImg: "./images/A8.png",
-    ans: 'A'
+    ans: 'C'
   },
   {//9
     qImg: "./images/Q9.png",
     ansImg: "./images/A9.png",
-    ans: 'A'
+    ans: 'C'
   },
   {//10
     qImg: "./images/Q10.png",
     ansImg: "./images/A10.png",
-    ans: 'A'
+    ans: 'D'
   },
 ]
 
@@ -145,11 +145,11 @@ app.get('/qsammary', (req, res) => {
     D: qStatus.filter(item => item.ans == 'D').length
   }
   const ans = qArray[currentQid].ans
-  const rightNum = resCount[ans].length;
+  const rightNum = resCount[ans].length || 0;
   const wrongNum = qStatus.length - rightNum;
   console.log("[Express] Get sammary: " + JSON.stringify(resCount));
   console.log("[Express] right: " + rightNum + "\nwrong: " + wrongNum);
-  res.status(200).json({ qid: currentQid, resCount: resCount, ans: ans, rightNum: rightNum, wrongNum: wrongNum });
+  res.status(200).json({ qid: currentQid, resCount: resCount, ans: ans, right: rightNum, wrong: wrongNum });
 });
 
 app.get('/qleader', async (req, res) => {
