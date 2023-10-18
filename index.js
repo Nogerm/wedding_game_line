@@ -139,12 +139,15 @@ app.get('/qsammary', (req, res) => {
   //const id = req.query.id;//target question id
   const qStatus = responsePool[currentQid];
   const resCount = {
-    a: qStatus.filter(item => item.ans == 'A').length,
-    b: qStatus.filter(item => item.ans == 'B').length,
-    c: qStatus.filter(item => item.ans == 'C').length,
-    d: qStatus.filter(item => item.ans == 'D').length
+    A: qStatus.filter(item => item.ans == 'A').length,
+    B: qStatus.filter(item => item.ans == 'B').length,
+    C: qStatus.filter(item => item.ans == 'C').length,
+    D: qStatus.filter(item => item.ans == 'D').length
   }
+  const rightNum = resCount[qArray[currentQid].ans].length;
+  const wrongNum = qStatus.length - rightNum;
   console.log("[Express] Get sammary: " + JSON.stringify(resCount));
+  console.log("[Express] right: " + rightNum + "\nwrong: " + wrongNum);
   res.status(200).json({ qid: currentQid, resCount: resCount });
 });
 

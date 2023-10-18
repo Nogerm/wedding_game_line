@@ -84,6 +84,7 @@
                         <div class="modal-body">
                             <!-- bar chart -->
                             <div class="container p-3">
+                                <p id="sum-text"></p>
                                 <canvas id="bar-chart" width="800" height="450"></canvas>
                             </div>
                         </div>
@@ -256,6 +257,8 @@
                     })
                     .then(data => {
                         console.log(data);
+                        // Summary
+
                         // Bar chart
                         new Chart(document.getElementById("bar-chart"), {
                             type: 'bar',
@@ -265,7 +268,7 @@
                                     {
                                         label: "Count",
                                         backgroundColor: ["#5775a5", "#f7bf00", "#ad5576", "#7e9261"],
-                                        data: [data.resCount.a, data.resCount.b, data.resCount.c, data.resCount.d]
+                                        data: [data.resCount.A, data.resCount.B, data.resCount.C, data.resCount.D]
                                     }
                                 ]
                             },
