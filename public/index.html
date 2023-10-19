@@ -281,7 +281,14 @@
                                     {
                                         label: "Count",
                                         backgroundColor: ["#5775a5", "#f7bf00", "#ad5576", "#7e9261"],
-                                        data: [data.resCount.A, data.resCount.B, data.resCount.C, data.resCount.D]
+                                        data: [data.resCount.A, data.resCount.B, data.resCount.C, data.resCount.D],
+                                        borderWidth: [
+                                            data.ans == 'A' ? 2 :0, 
+                                            data.ans == 'B' ? 2 :0,
+                                            data.ans == 'C' ? 2 :0,
+                                            data.ans == 'D' ? 2 :0,
+                                        ], // 設定特定條形的邊框寬度
+                                        borderColor: ["black", "black", "black", "black"]
                                     }
                                 ]
                             },
