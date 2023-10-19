@@ -420,7 +420,9 @@
                         document.querySelector("#qid").textContent = (data.qid + 1) + '/' + data.qtotal;
 
                         //carousel to next
-                        document.querySelector("#carouselExample").to(data.qid)
+                        const element = document.querySelector("#carouselExample");
+                        const instance = new bootstrap.Carousel(element);
+                        instance.to(data.qid)
                     })
                     .catch((err) => {
                         console.log('Error: ' + err);
