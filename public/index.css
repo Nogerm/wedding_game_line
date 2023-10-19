@@ -35,3 +35,20 @@
 .rankname {
     font-size: 30px;
 }
+
+.image-container {
+    height: 100%; /* 將容器的高度設定為父元素的高度 */
+    display: flex; /* 使用 flexbox 來調整圖片的位置 */
+    align-items: center; /* 垂直置中圖片 */
+    justify-content: center; /* 水平置中圖片 */
+    overflow: hidden; /* 如果圖片比容器大，則隱藏溢出部分 */
+}
+
+.img-fluid {
+    max-width: 100%; /* 讓圖片寬度最大不超過容器的寬度 */
+    max-height: 100%; /* 讓圖片高度最大不超過容器的高度 */
+    width: auto; /* 讓圖片寬度隨比例縮放 */
+    height: auto; /* 讓圖片高度隨比例縮放 */
+    display: block;
+    margin: auto;
+}
