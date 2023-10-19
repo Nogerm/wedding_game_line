@@ -180,6 +180,15 @@ app.get('/qleader', async (req, res) => {
   //sort result
   userCounts.sort((a, b) => b.score - a.score);
 
+  //add ranking
+  let currentRank = 1;
+  userCounts.forEach((user, index) => {
+    if (index > 0 && user.score !== userCounts[index - 1].score) {
+      currentRank += 1;
+    }
+    user.rank = currentRank;
+  })
+
   console.log("[Express] Get leaderboard: " + JSON.stringify(userCounts));
   res.status(200).json({ qid: currentQid, qleader: userCounts });
 });
