@@ -314,13 +314,14 @@
                                         enabled: false
                                     },
                                     datalabels: {
-                                        anchor: 'end',
-                                        align: 'top',
-                                        formatter: (value) => value, // 顯示數字
+                                        color: 'white', // 設定文字顏色
                                         font: {
-                                            size: 12,
                                             weight: 'bold'
-                                        }
+                                        },
+                                        anchor: 'center',
+                                        align: 'center',
+                                        offset: -2,
+                                        formatter: (value) => value // 顯示數值
                                     }
                                 }
                             }
