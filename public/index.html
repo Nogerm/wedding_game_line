@@ -422,7 +422,8 @@
                         //carousel to next
                         const element = document.querySelector("#carouselExample");
                         const instance = new bootstrap.Carousel(element);
-                        instance.to(data.qid)
+                        instance.to(data.qid);
+                        instance.pause();
                     })
                     .catch((err) => {
                         console.log('Error: ' + err);
