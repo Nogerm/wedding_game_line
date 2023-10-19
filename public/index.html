@@ -307,6 +307,7 @@
                                     yAxes: [{
                                         beginAtZero: true,
                                         ticks: {
+                                            min:0,
                                             stepSize: 1 // 設定 y 軸的刻度間隔為 1
                                         }
                                     }]
@@ -327,7 +328,12 @@
                                         anchor: 'center',
                                         align: 'center',
                                         offset: -2,
-                                        formatter: (value) => value // 顯示數值
+                                        formatter: function(value, context) {
+                                            if (value === 0) {
+                                                return ''; // 如果數值為 0，返回空字符串
+                                            }
+                                            return value; // 否則返回原始數值
+                                        }
                                     }
                                 }
                             }
