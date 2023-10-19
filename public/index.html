@@ -80,7 +80,7 @@
                 <div class="modal-dialog modal-dialog-centered modal-lg">
                     <div class="modal-content">
                         <div class="modal-header">
-                            <h1 class="modal-title fs-5"><span>回答統計</span><span id="persentage">%</span></h1>
+                            <h1 class="modal-title fs-5"><span>回答統計, 正確率：</span><span id="persentage">%</span></h1>
                             <button id="btnLeaderboard" class="btn btn-primary m-2">查看排行榜</button>
                         </div>
                         <div class="modal-body">
@@ -271,7 +271,7 @@
                     .then(data => {
                         console.log(data);
                         // Summary
-                        document.querySelector("#persentage").textContent = data.right / (data.right + data.wrong) + '%';
+                        document.querySelector("#persentage").textContent = data.right / (data.right + data.wrong) * 100+ '%';
 
                         // Bar chart
                         new Chart(document.getElementById("bar-chart"), {
