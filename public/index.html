@@ -298,12 +298,18 @@
                                     }]
                                 },
                                 plugins: {
+                                    legend: {
+                                        display: false
+                                    },
+                                    tooltip: {
+                                        enabled: false
+                                    },
                                     datalabels: {
                                         anchor: 'end',
                                         align: 'top',
-                                        color: 'black',
-                                        formatter: Math.round,
+                                        formatter: (value) => value, // 顯示數字
                                         font: {
+                                            size: 12,
                                             weight: 'bold'
                                         }
                                     }
