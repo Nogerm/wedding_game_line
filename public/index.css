@@ -52,3 +52,7 @@
     display: block;
     margin: auto;
 }
+
+.enlarge {
+    transform: scale(1.1); /* 將圖片放大 1.5 倍 */
+}
