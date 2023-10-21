@@ -36,12 +36,12 @@ const qArray = [
   {//3
     qImg: "./images/Q3.png",
     ansImg: "./images/A3.png",
-    ans: 'A'
+    ans: 'C'
   },
   {//4
     qImg: "./images/Q4.png",
     ansImg: "./images/A4.png",
-    ans: 'A'
+    ans: 'B'
   },
   {//5
     qImg: "./images/Q5.png",
@@ -72,6 +72,21 @@ const qArray = [
     qImg: "./images/Q10.png",
     ansImg: "./images/A10.png",
     ans: 'D'
+  },
+  {//11
+    qImg: "./images/Q11.png",
+    ansImg: "./images/A11.png",
+    ans: 'D'
+  },
+  {//12
+    qImg: "./images/Q12.png",
+    ansImg: "./images/A12.png",
+    ans: 'A'
+  },
+  {//13
+    qImg: "./images/Q13.png",
+    ansImg: "./images/A13.png",
+    ans: 'A'
   },
 ]
 
