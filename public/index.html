@@ -404,7 +404,13 @@
             });
 
             document.querySelector("#btnNextQ").addEventListener('click', () => {
+                $('#modalAnswer').modal('hide');
+                $('#modalSammary').modal('hide');
                 $('#modalLeaderboard').modal('hide');
+
+                //clear prev data
+                document.querySelector("#img-answer").src = "";
+
                 fetch(HOST + "/next", {
                     method: 'POST',
                     headers: {
