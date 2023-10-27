@@ -88,6 +88,11 @@ const qArray = [
     ansImg: "./images/A13.png",
     ans: 'A'
   },
+  {//14
+    qImg: "./images/Q14.png",
+    ansImg: "./images/A14.png",
+    ans: 'B'
+  },
 ]
 
 //---------------
