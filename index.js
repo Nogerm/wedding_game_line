@@ -26,22 +26,22 @@ const qArray = [
   {//1
     qImg: "./images/Q1.png",
     ansImg: "./images/A1.png",
-    ans: 'B'
+    ans: 'D'
   },
   {//2
     qImg: "./images/Q2.png",
     ansImg: "./images/A2.png",
-    ans: 'B'
+    ans: 'A'
   },
   {//3
     qImg: "./images/Q3.png",
     ansImg: "./images/A3.png",
-    ans: 'C'
+    ans: 'A'
   },
   {//4
     qImg: "./images/Q4.png",
     ansImg: "./images/A4.png",
-    ans: 'B'
+    ans: 'C'
   },
   {//5
     qImg: "./images/Q5.png",
@@ -51,27 +51,27 @@ const qArray = [
   {//6
     qImg: "./images/Q6.png",
     ansImg: "./images/A6.png",
-    ans: 'C'
+    ans: 'B'
   },
   {//7
     qImg: "./images/Q7.png",
     ansImg: "./images/A7.png",
-    ans: 'D'
+    ans: 'C'
   },
   {//8
     qImg: "./images/Q8.png",
     ansImg: "./images/A8.png",
-    ans: 'C'
+    ans: 'D'
   },
   {//9
     qImg: "./images/Q9.png",
     ansImg: "./images/A9.png",
-    ans: 'C'
+    ans: 'D'
   },
   {//10
     qImg: "./images/Q10.png",
     ansImg: "./images/A10.png",
-    ans: 'D'
+    ans: 'C'
   },
   {//11
     qImg: "./images/Q11.png",
@@ -81,16 +81,86 @@ const qArray = [
   {//12
     qImg: "./images/Q12.png",
     ansImg: "./images/A12.png",
-    ans: 'A'
+    ans: 'D'
   },
   {//13
     qImg: "./images/Q13.png",
     ansImg: "./images/A13.png",
-    ans: 'A'
+    ans: 'B'
   },
   {//14
     qImg: "./images/Q14.png",
     ansImg: "./images/A14.png",
+    ans: 'C'
+  },
+  {//15
+    qImg: "./images/Q15.png",
+    ansImg: "./images/A15.png",
+    ans: 'A'
+  },
+  {//16
+    qImg: "./images/Q16.png",
+    ansImg: "./images/A16.png",
+    ans: 'B'
+  },
+  {//17
+    qImg: "./images/Q17.png",
+    ansImg: "./images/A17.png",
+    ans: 'B'
+  },
+  {//18
+    qImg: "./images/Q18.png",
+    ansImg: "./images/A18.png",
+    ans: 'D'
+  },
+  {//19
+    qImg: "./images/Q19.png",
+    ansImg: "./images/A19.png",
+    ans: 'B'
+  },
+  {//20
+    qImg: "./images/Q20.png",
+    ansImg: "./images/A20.png",
+    ans: 'C'
+  },
+  {//21
+    qImg: "./images/Q21.png",
+    ansImg: "./images/A21.png",
+    ans: 'B'
+  },
+  {//22
+    qImg: "./images/Q22.png",
+    ansImg: "./images/A22.png",
+    ans: 'A'
+  },
+  {//23
+    qImg: "./images/Q23.png",
+    ansImg: "./images/A23.png",
+    ans: 'C'
+  },
+  {//24
+    qImg: "./images/Q24.png",
+    ansImg: "./images/A24.png",
+    ans: 'B'
+  },
+  {//25
+    qImg: "./images/Q25.png",
+    ansImg: "./images/A25.png",
+    ans: 'B'
+  },
+  {//26
+    qImg: "./images/Q26.png",
+    ansImg: "./images/A26.png",
+    ans: 'C'
+  },
+  {//27
+    qImg: "./images/Q27.png",
+    ansImg: "./images/A27.png",
+    ans: 'B'
+  },
+  {//28
+    qImg: "./images/Q28.png",
+    ansImg: "./images/A28.png",
     ans: 'B'
   },
 ]
